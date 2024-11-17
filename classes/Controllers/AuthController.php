@@ -2,7 +2,14 @@
 class AuthController extends Controller
 {
     public $signInErr = "";
+    public $phone_numberErr = "";
+    public $titleErr = "";
     public $nameErr = "";
+    public $addressErr = "";
+    public $passwordErr = "";
+    public $confirm_passwordErr = "";
+    public $passwordLenErr = "";
+    public $signup_success = "";
     public function signIn()
     {
         if (isset($_POST['sign_in'])) {
@@ -99,9 +106,10 @@ class AuthController extends Controller
                     // Store user data in the database
                     $this->insert('online_customer', $customer_id, $customer_name, $address, $phone_number, $password, '0' );
                     // Example: $this->insert('online_customer', ['title' => $title, 'name' => $name, 'phone_number' => $phone_number, 'password' => $password_hash]);
-                    echo "Registration successful!";
-                    header("Location: {$_SERVER['HTTP_REFERER']}");
-                    exit;
+                    // $this->signup_success = "Registration successful!";
+                    new Redirect('pages/sign_in');
+                    // header("Location: {$_SERVER['HTTP_REFERER']}");
+                    // exit;
                 }
             }
         }

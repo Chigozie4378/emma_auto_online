@@ -3,6 +3,9 @@ session_start();
 include "../autoload/loader.php";
 new CSRF();
 
+$ctr = new AuthController();
+$ctr->signUp();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,30 +39,38 @@ new CSRF();
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                     <div class="form-group pb-3">
                         <label for="title">Title</label>
+                         <div class="text-danger fw-bold"><?php echo $ctr->titleErr;?></div>
                         <select class="form-control" name="title" id="title" required>
+                            <?php Form::oldSelect('title');?>
                             <option value="">Select an Option</option>
                             <option value="MR">MR</option>
                             <option value="MRS">MRS</option>
                         </select>
+                       
                     </div>
                     <div class="form-group pb-3">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name">
+                        <div class="text-danger fw-bold"><?php echo $ctr->nameErr;?></div>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name" value="<?php Form::oldValue('name');?>">
                     </div>
                     <div class="form-group pb-3">
                         <label for="phone_number">Phone Number</label>
+                        <div class="text-danger fw-bold"><?php echo $ctr->phone_numberErr;?></div>
                         <input type="text" class="form-control" id="phone_number" name="phone_number"
-                            placeholder="Enter Your Phone Number">
+                            placeholder="Enter Your Phone Number"  value="<?php Form::oldValue('phone_number');?>">
                     </div>
                     <div class="form-group pb-3">
                         <label for="password">Password</label>
+                        <div class="text-danger fw-bold"><?php echo $ctr->passwordErr;?></div>
+                        <div class="text-danger fw-bold"><?php echo $ctr->passwordLenErr;?></div>
                         <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Enter Your password">
+                            placeholder="Enter Your password"  value="<?php Form::oldValue('password');?>">
                     </div>
                     <div class="form-group pb-3">
                         <label for="password">Confrim Password</label>
+                        <div class="text-danger fw-bold"><?php echo $ctr->confirm_passwordErr;?></div>
                         <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                            placeholder="Enter Your Confrim password">
+                            placeholder="Enter Your Confrim password"  value="<?php Form::oldValue('confirm_password');?>">
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" name="sign_up" value="Sign Up">

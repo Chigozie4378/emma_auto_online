@@ -13,7 +13,7 @@ if ($_SERVER['PHP_SELF'] == '/emma_online/index.php') { ?>
             <button class="btn btn-primary">Search</button>
         </div>
         <div>
-            <a href="#" class="text-white me-3">Sign In</a>
+            <a href="pages/sign_in" class="text-white me-3">Sign In</a>
             <span class="text-white">My Cart: £93.01</span>
         </div>
     </div>
