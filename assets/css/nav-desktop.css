@@ -1,0 +1,111 @@
+/* Desktop view */
+.search-container {
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.search-container .form-select {
+    width: 150px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 1px solid #ced4da;
+}
+
+.search-container .form-control {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    flex-grow: 1;
+}
+
+.search-container .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mega Menu styling */
+.dropdown-menu {
+    min-width: 200px;
+    padding: 20px;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: #fff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    position: relative;
+}
+
+.mega-menu {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+    position: absolute;
+    width: 600px;
+    left: 100%;
+    top: 0;
+    padding: 20px;
+    background: #f8f9fa;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item:hover .mega-menu {
+    visibility: visible;
+    opacity: 1;
+}
+
+.mega-menu .mega-menu-column {
+    width: 200px;
+    font-weight: bold;
+}
+
+.mega-menu .mega-menu-column a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+}
+
+.mega-menu .mega-menu-column a:hover {
+    text-decoration: underline;
+}
+
+/* Styling for dropdown items with arrows */
+.dropdown-item>a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-item>a:hover {
+    text-decoration: none;
+    color: #d9534f;
+}
+
+/* Styling for dropdown items with arrows */
+.dropdown-item>a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-item>a:hover {
+    text-decoration: none;
+    color: #d9534f;
+}

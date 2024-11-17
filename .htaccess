@@ -1,0 +1,10 @@
+RewriteEngine On    # Turn on the rewriting engine
+
+# Only apply the rewrite if the request is not for an actual directory
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Only apply the rewrite if the request is not for an actual file
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Rewrite requests that do not have a period (other than hidden files) to the .php version
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
