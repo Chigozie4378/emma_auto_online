@@ -33,19 +33,19 @@ $ctr->signIn();
             <h1 class="text-center">Sign In</h1>
             <div class="p-4 " style="background-color: #c9cfd8; border-radius: 10px;">
                 
-                <span class="text-danger"><?php echo $signInErr?></span>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                <div class="text-danger fw-bold"><?php echo $ctr->signInErr;?></div>
+                <form action="" method="post">
                     <!-- CSRF Token -->
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                     <div class="form-group pb-3">
                         <label for="phone_number">Phone Number</label>
-                        <input type="text" class="form-control" id="phone_number" name="phone_number"
-                            placeholder="Enter Your Phone Number">
+                        <input type="text" class="form-control" id="phone_no" name="phone_no"
+                            placeholder="Enter Your Phone Number" value="<?php Form::oldValue('phone_no');?>">
                     </div>
                     <div class="form-group pb-3">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Enter Your password">
+                            placeholder="Enter Your password" value="<?php Form::oldValue('password');?>">
                     </div>
                     <div class="form-group mb-3">
                         <input type="submit" class="btn btn-primary" name="sign_in" value="Sign In">

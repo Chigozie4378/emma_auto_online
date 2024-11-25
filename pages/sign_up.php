@@ -54,9 +54,15 @@ $ctr->signUp();
                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name" value="<?php Form::oldValue('name');?>">
                     </div>
                     <div class="form-group pb-3">
+                        <label for="address">Address</label>
+                        <div class="text-danger fw-bold"><?php echo $ctr->addressErr;?></div>
+                        <input type="text" class="form-control" id="address" name="address"
+                            placeholder="Enter Your Address"  value="<?php Form::oldValue('address');?>">
+                    </div>
+                    <div class="form-group pb-3">
                         <label for="phone_number">Phone Number</label>
-                        <div class="text-danger fw-bold"><?php echo $ctr->phone_numberErr;?></div>
-                        <input type="text" class="form-control" id="phone_number" name="phone_number"
+                        <div class="text-danger fw-bold"><?php echo $ctr->phone_numberErr; echo $phone_no_existErr?></div>
+                        <input type="text" class="form-control" id="phone_no" name="phone_no"
                             placeholder="Enter Your Phone Number"  value="<?php Form::oldValue('phone_number');?>">
                     </div>
                     <div class="form-group pb-3">

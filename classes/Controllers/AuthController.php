@@ -3,6 +3,7 @@ class AuthController extends Controller
 {
     public $signInErr = "";
     public $phone_numberErr = "";
+    public $phone_no_existErr = "";
     public $titleErr = "";
     public $nameErr = "";
     public $addressErr = "";
@@ -13,30 +14,46 @@ class AuthController extends Controller
     public function signIn()
     {
         if (isset($_POST['sign_in'])) {
-            // Check CSRF token
-            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-                die("CSRF token validation failed.");
-            }
+            // // Check CSRF token
+            // if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            //     die("CSRF token validation failed.");
+            // }
 
-            // Proceed with form handling if CSRF check passes
-            $phone_number = filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING);
-            $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+            // // Proceed with form handling if CSRF check passes
+            $phone_no = Form::test_input(filter_input(INPUT_POST, 'phone_no', FILTER_SANITIZE_STRING));
+            $password = Form::test_input(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
+            
 
             // Fetch user data from the database based on the provided phone number
-            $result = $this->fetchWhereAnd('online_customer', "phone_number= $phone_number");
-            $user = mysqli_fetch_array($result);
+            $phone_no_exist = $this->fetchWhereAnd('online_customer', "phone_no= $phone_no");
+            
+            if (mysqli_num_rows($phone_no_exist) >0){
 
-            if ($user && password_verify($password, $user['password'])) {
-                // Password is correct, user is authenticated
-                // You may now start a session, set session variables, redirect, etc.
-                echo "Login successful!";
-                new Redirect($_SERVER['HTTP_REFERER']);
+                $user = mysqli_fetch_array($phone_no_exist);
+                
+                if ($user && password_verify($password, $user['password'])) {
 
-                // Optional: Regenerate CSRF token after successful login for added security
-                unset($_SESSION['csrf_token']);
-            } else {
-                // Invalid phone number or password
-                $this->signInErr = "Invalid credentials.";
+                    $this->updates(
+                        "online_customer",
+                        U::col("status = 1"),
+                        U::where("phone_no = $phone_no")
+                    );
+                    // Password is correct, user is authenticated
+                    // You may now start a session, set session variables, redirect, etc.
+                    Session::name("phone_no",$user['phone_no']);
+                    Session::name("customer_name",$user['customer_name']);
+                    echo "Login successful!";
+                    new Redirect('products');
+    
+                    // // Optional: Regenerate CSRF token after successful login for added security
+                    // unset($_SESSION['csrf_token']);
+                } else {
+                    // Invalid phone number or password
+                    $this->signInErr = "Invalid Login Credentials.";
+                }
+            }else{
+                $this->signInErr = "Invalid Login Credentials.";
+                
             }
         }
     }
@@ -45,16 +62,16 @@ class AuthController extends Controller
     {
         if (isset($_POST['sign_up'])) {
             // Check CSRF token
-            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-                die("CSRF token validation failed.");
-            }
-            unset($_SESSION['csrf_token']); // Optional: Invalidate token after use
+            // if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            //     die("CSRF token validation failed.");
+            // }
+            // unset($_SESSION['csrf_token']); // Optional: Invalidate token after use
 
             // Generate and validate unique UUID for customer_id
             do {
                 $customer_id = bin2hex(random_bytes(16)); // Generates a 32-character unique ID
                 $result = $this->fetchWhereAnd('online_customer', "customer_id = '$customer_id'");
-            } while ($result); // Keep generating until a unique ID is found
+            } while (mysqli_num_rows($result) > 0); // Keep generating until a unique ID is found
 
             if (empty(Form::test_input(filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS)))) {
                 $this->titleErr = "Title is required";
@@ -78,15 +95,15 @@ class AuthController extends Controller
                 $address = Form::test_input(filter_input(INPUT_POST, 'address', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
             }
 
-            if (empty(Form::test_input(filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_NUMBER_INT)))) {
+            if (empty(Form::test_input(filter_input(INPUT_POST, 'phone_no', FILTER_SANITIZE_NUMBER_INT)))) {
                 $this->phone_numberErr = "Phone Number is required";
             } else {
-                $phone_number = Form::test_input(filter_input(INPUT_POST, 'phone_number', FILTER_SANITIZE_NUMBER_INT));
+                $phone_number = Form::test_input(filter_input(INPUT_POST, 'phone_no', FILTER_SANITIZE_NUMBER_INT));
 
                 // Check if phone number already exists in the database
-                $result = $this->fetchWhereAnd('online_customer', "phone_number = '$phone_number'");
-                if ($result) { // Assuming fetchWhereAnd returns data if a record exists
-                    $this->phone_numberErr = "Phone number is already registered";
+                $phone_no_exist = $this->fetchWhereAnd('online_customer', "phone_no = '$phone_number'");
+                if (mysqli_num_rows($phone_no_exist) > 0) { // Assuming fetchWhereAnd returns data if a record exists
+                    $this->phone_no_existErr = "Phone number is already registered";
                 }
             }
 
@@ -104,10 +121,10 @@ class AuthController extends Controller
                 } elseif (empty($this->phone_numberErr)) { // Proceed only if phone number validation passed
                     $password_hash = password_hash($password, PASSWORD_DEFAULT);
                     // Store user data in the database
-                    $this->insert('online_customer', $customer_id, $customer_name, $address, $phone_number, $password, '0' );
+                    $this->insert('online_customer', $customer_id, $customer_name, $address, $phone_number, $password_hash, '0' );
                     // Example: $this->insert('online_customer', ['title' => $title, 'name' => $name, 'phone_number' => $phone_number, 'password' => $password_hash]);
                     // $this->signup_success = "Registration successful!";
-                    new Redirect('pages/sign_in');
+                    new Redirect('sign_in');
                     // header("Location: {$_SERVER['HTTP_REFERER']}");
                     // exit;
                 }

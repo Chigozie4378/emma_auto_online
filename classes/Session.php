@@ -1,17 +1,29 @@
 <?php
-class Session
+class Session extends Controller
 {
 
-  public static function adminAccess($username)
+  public function checkStatus()
   {
-    if (!isset($_SESSION["$username"])) {
-      new Redirect('../../admin.php');
+    $status_result = $this->fetchWhereAnd('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 1");
+    $status = mysqli_fetch_array($status_result);
+    if ($status['status'] ==1){
+      new Redirect('index');
     }
   }
-  public static function adminLoginAccess($username)
+  public function userLoggedIn($username)
   {
-    if (isset($_SESSION["$username"])) {
-      new Redirect('admin/views/index.php');
+    $status_result = $this->fetchWhereAnd('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 0");
+    $status = mysqli_fetch_array($status_result);
+    if ($status['status'] ==1){
+      new Redirect('index');
+    }
+  }
+  public function userLoggedOut($username)
+  {
+    $status_result = $this->fetchWhereAnd('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 0");
+    $status = mysqli_fetch_array($status_result);
+    if ($status['status'] ==1){
+      new Redirect('index');
     }
   }
   public static function staffAccess($username)
