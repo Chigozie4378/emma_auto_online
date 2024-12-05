@@ -224,4 +224,52 @@
     outline: none;
     box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
     background-color: #fff;
+}
+
+/* Product Image Tooltip Styles */
+.product-image-tooltip {
+    --bs-tooltip-bg: white;
+    --bs-tooltip-color: #333;
+    --bs-tooltip-opacity: 1;
+}
+
+.product-image-tooltip .tooltip-inner {
+    background-color: white;
+    padding: 0;
+    max-width: none;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.product-image-tooltip .tooltip-arrow::before {
+    border-right-color: white;
+}
+
+.image-options {
+    min-width: 150px;
+}
+
+.image-options .option {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: #333;
+    text-align: left;
+}
+
+.image-options .option:hover {
+    background-color: #f8f9fa;
+}
+
+.image-options .option i {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.product-image {
+    cursor: pointer;
+}
+
+.image-options .option:not(:last-child) {
+    border-bottom: 1px solid #eee;
 } 

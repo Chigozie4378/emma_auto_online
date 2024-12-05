@@ -16,6 +16,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="../assets/admin/css/admin-style.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -82,5 +83,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </nav>
 
 <div style="padding-top: 70px;">
-
 </div>
+
+

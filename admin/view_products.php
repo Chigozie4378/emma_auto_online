@@ -1,5 +1,19 @@
 <?php include 'includes/_header.php'; ?>
 
+<!-- Add modal for enlarged image -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" id="enlargedImage" class="img-fluid" alt="Enlarged Product">
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Products List</h2>
@@ -32,7 +46,17 @@
                         <tr>
                             <td class="ps-4">1</td>
                             <td>
-                                <img src="../assets/images/products/image.png" class="rounded" width="40" height="40" alt="Product">
+                                <div class="position-relative product-image-cell">
+                                    <img src="../assets/images/products/image.png" 
+                                         class="rounded product-image" 
+                                         width="40" 
+                                         height="40" 
+                                         alt="Product"
+                                         data-bs-toggle="tooltip">
+                                    <input type="file" 
+                                           class="d-none image-upload" 
+                                           accept="image/*">
+                                </div>
                             </td>
                             <td>
                                 <div class="editable-cell" contenteditable="true">Chain and Sprocket</div>
@@ -61,16 +85,27 @@
                         <tr>
                             <td class="ps-4">2</td>
                             <td>
-                                <img src="../assets/images/products/image.png" class="rounded" width="40" height="40" alt="Product">
+                                <div class="position-relative product-image-cell">
+                                    <img src="../assets/images/products/image.png" 
+                                         class="rounded product-image" 
+                                         width="40" 
+                                         height="40" 
+                                         alt="Product"
+                                         data-bs-toggle="tooltip">
+                                    <input type="file" 
+                                           class="d-none image-upload" 
+                                           accept="image/*">
+                                </div>
                             </td>
                             <td>
                                 <div class="editable-cell" contenteditable="true">Front Sprocket</div>
                             </td>
                             <td>
                                 <select class="form-select form-select-sm">
-                                    <option>BX100</option>
-                                    <option selected>BX150</option>
-                                    <option>BX200</option>
+                                    <option value="">Not Selected</option>
+                                    <option value="BX100">BX100</option>
+                                    <option value="BX150" selected>BX150</option>
+                                    <option value="BX200">BX200</option>
                                 </select>
                             </td>
                             <td>
@@ -93,4 +128,5 @@
     </div>
 </div>
 
-<?php include 'includes/_footer.php'; ?> 
+<?php include 'includes/_footer.php'; ?>
+
