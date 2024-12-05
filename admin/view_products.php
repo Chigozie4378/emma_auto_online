@@ -33,9 +33,9 @@
                 <table class="table table-hover spreadsheet-table mb-0">
                     <thead>
                         <tr>
-                            <th class="ps-4" style="width: 50px;">ID</th>
+                            <th class="ps-4" style="width: 50px;">S/N</th>
                             <th style="width: 80px;">Image</th>
-                            <th>Name</th>
+                            <th>Product Name</th>
                             <th style="width: 200px;">Model</th>
                             <th style="width: 200px;">Manufacturer</th>
                             <th style="width: 100px;" class="text-center">Actions</th>
