@@ -1,33 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Only initialize product image features if we're on the view_products page
-    if (document.querySelector('.product-image')) {
-        initializeProductImageFeatures();
-    }
-});
-
-function initializeProductImageFeatures() {
     // Initialize Bootstrap tooltips with custom content
     const tooltipTriggerList = document.querySelectorAll('.product-image');
-    const tooltips = [];
-    
     tooltipTriggerList.forEach(img => {
-        const tooltip = new bootstrap.Tooltip(img, {
+        new bootstrap.Tooltip(img, {
             trigger: 'click',
             html: true,
             title: `
-                <div class="image-options">
-                    <div class="option magnify-option">
-                        <i class="fas fa-search-plus"></i> Magnify
+                    <div class="image-options">
+                        <div class="option magnify-option">
+                            <i class="fas fa-search-plus"></i> Magnify
+                        </div>
+                        <div class="option change-image-option">
+                            <i class="fas fa-camera"></i> Change Image
+                        </div>
                     </div>
-                    <div class="option change-image-option">
-                        <i class="fas fa-camera"></i> Change Image
-                    </div>
-                </div>
-            `,
+                `,
             placement: 'right',
             customClass: 'product-image-tooltip'
         });
-        tooltips.push(tooltip);
     });
 
     // Handle tooltip option clicks
@@ -82,4 +72,4 @@ function initializeProductImageFeatures() {
             }
         });
     });
-}
+});
