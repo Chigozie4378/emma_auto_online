@@ -1,6 +1,7 @@
 <?php include 'includes/_header.php'; 
 $ctr = new UnitController();
 $ctr->addModel();
+$ctr->deleteModel();
 ?>
 
 <div class="container py-4">
@@ -46,7 +47,7 @@ $ctr->addModel();
                         $i = 0;
                         $models = $ctr->showAllModel();
                         while ($row = mysqli_fetch_array($models)) {
-                            $id = $row['id'];
+                            $id = $row['model_id'];
                             $name = $row['name'];
                             echo '
                        
@@ -57,10 +58,10 @@ $ctr->addModel();
                                 <div class="editable-cell" contenteditable="true">' . $name . '</div>
                             </td>
                             
-                            <td>
-                                <button class="btn btn-sm btn-link text-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                             <td>
+                            <a class="btn btn-sm btn-link text-danger" href="model.php?delete='.$id.'">
+                            <i class="fas fa-trash"></i>
+                            </a>
                             </td>
                         </tr>
                      

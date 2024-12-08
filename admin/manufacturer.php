@@ -1,6 +1,7 @@
 <?php include 'includes/_header.php'; 
 $ctr = new UnitController();
 $ctr->addManufacturer();
+$ctr->deleteManufacturer();
 ?>
 
 <div class="container py-4">
@@ -42,11 +43,12 @@ $ctr->addManufacturer();
                         </tr>
                     </thead>
                     <tbody>
+                        
                         <?php
                         $i = 0;
                         $manufacturers = $ctr->showAllManufacturer();
                         while ($row = mysqli_fetch_array($manufacturers)) {
-                            $id = $row['id'];
+                            $id = $row['manufacturer_id'];
                             $name = $row['name'];
                             echo '
                        
@@ -58,9 +60,9 @@ $ctr->addManufacturer();
                             </td>
                             
                             <td>
-                                <button class="btn btn-sm btn-link text-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                            <a class="btn btn-sm btn-link text-danger" href="manufacturer.php?delete='.$id.'">
+                            <i class="fas fa-trash"></i>
+                            </a>
                             </td>
                         </tr>
                      

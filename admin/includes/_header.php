@@ -11,7 +11,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/admin/css/admin-style.css">
@@ -45,7 +44,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <a class="nav-link dropdown-toggle <?php echo in_array($current_page, ['view_products.php', 'add_product.php', 'upload_product.php']) ? 'active-nav' : ''; ?>" 
                        href="#" 
                        role="button">
-                        <i class="fas fa-box me-2"></i>Product
+                        <i class="fab fa-product-hunt me-2"  aria-hidden="true"></i>Product
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="view_products">View Products</a></li>
