@@ -1,4 +1,8 @@
-<?php include 'includes/_header.php'; ?>
+<?php include 'includes/_header.php';
+$ctr = new ProductsController();
+$products = $ctr->showAllProducts();
+
+?>
 
 <!-- Add modal for enlarged image -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
@@ -26,7 +30,7 @@
             </a>
         </div>
     </div>
-    
+
     <div class="card border-0 shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -42,12 +46,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Sample data -->
+                        <?php
+                        $i = 0;
+                        while ($row = mysqli_fetch_array($products)) {
+                            $id = $row['id'];
+                            $name = $row['product_name'];
+                            $image = $row['image_path'];
+                            echo '
+                       
                         <tr>
-                            <td class="ps-4">1</td>
+                            <td class="ps-4">' . ++$i . '</td>
                             <td>
                                 <div class="position-relative product-image-cell">
-                                    <img src="../assets/images/products/image.png" 
+                                    <img src="' . $image . '" 
                                          class="rounded product-image" 
                                          width="40" 
                                          height="40" 
@@ -59,20 +70,20 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="editable-cell" contenteditable="true">Chain and Sprocket</div>
+                                <div class="editable-cell" contenteditable="true">' . $name . '</div>
                             </td>
                             <td>
                                 <select class="form-select form-select-sm">
-                                    <option>BX100</option>
+                                    <option value = "">Select a Model</option>
                                     <option>BX150</option>
                                     <option>BX200</option>
                                 </select>
                             </td>
                             <td>
                                 <select class="form-select form-select-sm">
+                                    <option value = "">Select a Manufacturer</option>
                                     <option>Chanlin</option>
-                                    <option>DID</option>
-                                    <option>RK</option>
+                                    <option>Shiroro</option>
                                 </select>
                             </td>
                             <td class="text-center">
@@ -81,46 +92,11 @@
                                 </button>
                             </td>
                         </tr>
-                        <!-- Add more sample rows for better visualization -->
-                        <tr>
-                            <td class="ps-4">2</td>
-                            <td>
-                                <div class="position-relative product-image-cell">
-                                    <img src="../assets/images/products/image.png" 
-                                         class="rounded product-image" 
-                                         width="40" 
-                                         height="40" 
-                                         alt="Product"
-                                         data-bs-toggle="tooltip">
-                                    <input type="file" 
-                                           class="d-none image-upload" 
-                                           accept="image/*">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="editable-cell" contenteditable="true">Front Sprocket</div>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option value="">Not Selected</option>
-                                    <option value="BX100">BX100</option>
-                                    <option value="BX150" selected>BX150</option>
-                                    <option value="BX200">BX200</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option>Chanlin</option>
-                                    <option selected>DID</option>
-                                    <option>RK</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-link text-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
+                     
+                        ';
+
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

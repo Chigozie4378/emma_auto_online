@@ -71,6 +71,10 @@ class ProductsController extends Controller
             }
         }
     }
-   
+    public function showAllProducts() {
+        $products = $this->fetchAll("online_products");
+        
+        return $products;
+    }
     
 }
