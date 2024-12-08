@@ -1,5 +1,5 @@
 <?php
-class UnitController extends Controller
+class UnitsController extends Controller
 {
     public $addModelErr = "";
     public $addModelSuccess = "";
@@ -104,6 +104,24 @@ class UnitController extends Controller
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                       </div>';
         }
+    }
+    public function updateManufacturer($id, $name) {
+
+      
+        $this->updates(
+            "manufacturer",
+            U::col("name = $name"),
+            U::where("manufacturer_id = $id")
+        );
+    }
+    public function updateModel($id, $name) {
+
+      
+        $this->updates(
+            "model",
+            U::col("name = $name"),
+            U::where("model_id = $id")
+        );
     }
     
 

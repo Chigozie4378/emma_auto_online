@@ -1,5 +1,5 @@
 <?php include 'includes/_header.php'; 
-$ctr = new UnitController();
+$ctr = new UnitsController();
 $ctr->addModel();
 $ctr->deleteModel();
 ?>
@@ -55,7 +55,7 @@ $ctr->deleteModel();
                             <td class="ps-4">' . ++$i . '</td>
                         
                             <td>
-                                <div class="editable-cell" contenteditable="true">' . $name . '</div>
+                                <div class="editable-cell" contenteditable="true" data-id="' . $id . '">' . $name . '</div>
                             </td>
                             
                              <td>
@@ -73,7 +73,30 @@ $ctr->deleteModel();
                 </table>
             </div>
         </div>
-
-
     </div>
 </div>
+<?php include 'includes/_footer.php'; ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.editable-cell').on('keyup', function() {
+        const manufacturerId = $(this).data('id'); // Get manufacturer ID
+        const newValue = $(this).text().trim(); // Get updated value
+        
+        $.ajax({
+            url: 'ajax/units/model.php', // Backend script
+            method: 'POST',
+            data: {
+                id: manufacturerId,
+                name: newValue,
+            },
+            success: function(data) {
+                $("#test").html(data);
+            },
+            error: function() {
+                console.error('An error occurred while updating the manufacturer.');
+            }
+        });
+    });
+});
+</script>

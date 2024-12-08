@@ -1,5 +1,5 @@
-<?php include 'includes/_header.php'; 
-$ctr = new UnitController();
+<?php include 'includes/_header.php';
+$ctr = new UnitsController();
 $ctr->addManufacturer();
 $ctr->deleteManufacturer();
 ?>
@@ -15,14 +15,14 @@ $ctr->deleteManufacturer();
         <div class="col-md-4 col-sm-12">
             <div class="card border-2 shadow-sm">
                 <div class="card-body">
-                    <?php echo $ctr->addManufacturerErr;?>
-                    <?php echo $ctr->addManufacturerSuccess;?>
+                    <?php echo $ctr->addManufacturerErr; ?>
+                    <?php echo $ctr->addManufacturerSuccess; ?>
                     <form action="" method="POST">
                         <div class="row">
-                                <div class="mb-3">
-                                    <label class="form-label">Manufacturer</label>
-                                    <input type="text" class="form-control" name="manufacturer" required>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Manufacturer</label>
+                                <input type="text" class="form-control" name="manufacturer" required>
+                            </div>
 
                             <div class="col-12">
                                 <button type="submit" name="add" class="btn btn-primary">Add Product</button>
@@ -43,7 +43,7 @@ $ctr->deleteManufacturer();
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                         <?php
                         $i = 0;
                         $manufacturers = $ctr->showAllManufacturer();
@@ -56,11 +56,11 @@ $ctr->deleteManufacturer();
                             <td class="ps-4">' . ++$i . '</td>
                         
                             <td>
-                                <div class="editable-cell" contenteditable="true">' . $name . '</div>
+                                <div class="editable-cell" contenteditable="true" data-id="' . $id . '">' . $name . '</div>
                             </td>
-                            
+
                             <td>
-                            <a class="btn btn-sm btn-link text-danger" href="manufacturer.php?delete='.$id.'">
+                            <a class="btn btn-sm btn-link text-danger" href="manufacturer.php?delete=' . $id . '">
                             <i class="fas fa-trash"></i>
                             </a>
                             </td>
@@ -78,3 +78,29 @@ $ctr->deleteManufacturer();
 
     </div>
 </div>
+
+<?php include 'includes/_footer.php'; ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.editable-cell').on('keyup', function() {
+        const manufacturerId = $(this).data('id'); // Get manufacturer ID
+        const newValue = $(this).text().trim(); // Get updated value
+        
+        $.ajax({
+            url: 'ajax/units/manufacturer.php', // Backend script
+            method: 'POST',
+            data: {
+                id: manufacturerId,
+                name: newValue,
+            },
+            success: function(data) {
+                $("#test").html(data);
+            },
+            error: function() {
+                console.error('An error occurred while updating the manufacturer.');
+            }
+        });
+    });
+});
+</script>
