@@ -1,6 +1,9 @@
 <?php include 'includes/_header.php';
 $ctr = new ProductsController();
+$ctr1 = new UnitsController();
 $products = $ctr->showAllProducts();
+$models = $ctr1->showAllModel();
+$manufacturers = $ctr1->showAllManufacturer();
 
 ?>
 
@@ -51,6 +54,8 @@ $products = $ctr->showAllProducts();
                         while ($row = mysqli_fetch_array($products)) {
                             $id = $row['id'];
                             $name = $row['product_name'];
+                            $model = $row['model'];
+                            $manufacturer = $row['manufacturer'];
                             $image = $row['image_path'];
                             echo '
                        
@@ -73,18 +78,46 @@ $products = $ctr->showAllProducts();
                                 <div class="editable-cell" contenteditable="true">' . $name . '</div>
                             </td>
                             <td>
-                                <select class="form-select form-select-sm">
-                                    <option value = "">Select a Model</option>
-                                    <option>BX150</option>
-                                    <option>BX200</option>
-                                </select>
+                                <select class="form-select form-select-sm">';
+        // If a model is already set, show it as selected
+        if (!empty($model)) {
+            echo '<option value="' . htmlspecialchars($model) . '" selected>' . htmlspecialchars($model) . '</option>';
+        } else {
+            echo '<option value="" selected>Select a Model</option>';
+        }
+
+        // Reset the result pointer since we're reusing $models
+        mysqli_data_seek($models, 0);
+        
+        // Fetch and display all available models
+        while ($modelItem = mysqli_fetch_array($models)) {
+            if ($modelItem['name'] !== $model) { // Don't show duplicate of selected model
+                echo '<option value="' . htmlspecialchars($modelItem['name']) . '">' . 
+                     htmlspecialchars($modelItem['name']) . '</option>';
+            }
+        }
+        echo '</select>
                             </td>
+
                             <td>
-                                <select class="form-select form-select-sm">
-                                    <option value = "">Select a Manufacturer</option>
-                                    <option>Chanlin</option>
-                                    <option>Shiroro</option>
-                                </select>
+                                <select class="form-select form-select-sm">';
+                                // If a model is already set, show it as selected
+        if (!empty($manufacturer)) {
+            echo '<option value="' . htmlspecialchars($manufacturer) . '" selected>' . htmlspecialchars($manufacturer) . '</option>';
+        } else {
+            echo '<option value="" selected>Select a Manufacturer</option>';
+        }
+        // Reset the result pointer since we're reusing $models
+        mysqli_data_seek($manufacturers, 0);
+        
+        // Fetch and display all available models
+        while ($manufacturerItem = mysqli_fetch_array($manufacturers)) {
+            if ($manufacturerItem['name'] !== $model) { // Don't show duplicate of selected model
+                echo '<option value="' . htmlspecialchars($manufacturerItem['name']) . '">' . 
+                     htmlspecialchars($manufacturerItem['name']) . '</option>';
+            }
+        }
+        echo      '</select>
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-link text-danger">
