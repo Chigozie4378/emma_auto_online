@@ -76,5 +76,14 @@ class ProductsController extends Controller
         
         return $products;
     }
+
+    public function updateProductField($id, $field, $value) {
+        $this->updates(
+            "online_products",
+            U::col("$field = $value"),
+            U::where("product_id = $id")
+        );
+    }
+    
     
 }
