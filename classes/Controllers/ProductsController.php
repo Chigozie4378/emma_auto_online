@@ -1,7 +1,9 @@
 <?php
 
 class ProductsController extends Controller
+
 {
+    
     public function uploadProducts()
     {
         if (isset($_POST['upload'])) {
@@ -17,7 +19,7 @@ class ProductsController extends Controller
             $failed_uploads = [];    // To store reasons for failed uploads
 
             foreach ($_FILES['files']['name'] as $i => $name) {
-                $name = Form::test_input($name); // Sanitize the name
+                $name = strtoupper(Form::test_input($name)); // Sanitize the name
                 $type = Form::test_input($_FILES['files']['type'][$i]);
 
                 if (empty($name)) {
@@ -84,6 +86,16 @@ class ProductsController extends Controller
             U::where("product_id = $id")
         );
     }
-    
+    public function deleteProduct() {
+        if (isset($_GET['product_id'])) {
+            $id = $_GET['product_id'];
+            $this->trashWhere('online_products', "product_id = $id");
+            $this->deleteModelSuccess = '<div class="alert alert-success alert-dismissible fade show">
+                        <strong>Manufacturer is Deleted Successfully </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                      </div>';
+        }
+
+    }
     
 }

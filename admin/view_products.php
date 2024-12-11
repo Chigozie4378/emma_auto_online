@@ -4,6 +4,7 @@ $ctr1 = new UnitsController();
 $products = $ctr->showAllProducts();
 $models = $ctr1->showAllModel();
 $manufacturers = $ctr1->showAllManufacturer();
+$ctr->deleteProduct();
 
 ?>
 
@@ -110,7 +111,8 @@ $manufacturers = $ctr1->showAllManufacturer();
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-link text-danger">
-                                    <i class="fas fa-trash"></i>
+                                    <a class="text-danger" href="view_products.php?product_id=<?php echo $id;?>"><i class="fas fa-trash"></i></a>
+                                    
                                 </button>
                             </td>
                         </tr>
