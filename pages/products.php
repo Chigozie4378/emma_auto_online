@@ -17,6 +17,7 @@ session_start();
     <link rel="stylesheet" href="../assets/css/nav-mobile.css">
     <link rel="stylesheet" href="../assets/css/slider.css">
     <link rel="stylesheet" href="../assets/css/category-destop.css">
+    <link rel="stylesheet" href="../assets/chosen/chosen.css">
 </head>
 
 <body>
@@ -165,7 +166,11 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/nav-mobile.js"></script>
-   
+    <script src="../assets/chosen/chosen.js"></script>
+    <script>
+        $(".chosen").chosen();
+    </script>
+
 </body>
 
 </html>

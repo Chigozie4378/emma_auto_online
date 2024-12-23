@@ -1,9 +1,9 @@
 <?php
 
 class ProductsController extends Controller
-
 {
-    public function addProduct(){
+    public function addProduct()
+    {
         if (isset($_POST['upload'])) {
             // Set maximum upload sizes in PHP
             ini_set('max_execution_time', 50000);
@@ -21,25 +21,25 @@ class ProductsController extends Controller
             $model = strtoupper(Form::test_input($_POST['model']));
             $manufacturer = strtoupper(Form::test_input($_POST['manufacturer']));
 
-            
+
             if (empty($name)) {
                 $failed_uploads[] = "You must select a file.";
-              
+
             }
 
             if (!in_array($type, $allowed_types)) {
                 $failed_uploads[] = "Sorry, only JPG, PNG, and GIF files are allowed for file '$name'.";
-               
+
             }
 
             $target_file = $target_dir . basename($name);
-           
-            $product_exists = $this->fetchWhereAnd("online_products", "product_name = '$name'","model = '$model'","manufacturer = '$manufacturer'");
+
+            $product_exists = $this->fetchWhereAnd("online_products", "product_name = '$name'", "model = '$model'", "manufacturer = '$manufacturer'");
             if (mysqli_num_rows($product_exists) > 0) {
                 $failed_uploads[] = "$name $model $manufacturer' has already been uploaded.";
-             
+
             }
-            
+
             if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
                 do {
                     $unique_id = uniqid();
@@ -141,20 +141,23 @@ class ProductsController extends Controller
             }
         }
     }
-    public function showAllProducts() {
+    public function showAllProducts()
+    {
         $products = $this->fetchAll("online_products");
-        
+
         return $products;
     }
 
-    public function updateProductField($id, $field, $value) {
+    public function updateProductField($id, $field, $value)
+    {
         $this->updates(
             "online_products",
             U::col("$field = $value"),
             U::where("product_id = $id")
         );
     }
-    public function deleteProduct() {
+    public function deleteProduct()
+    {
         if (isset($_GET['product_id'])) {
             $id = $_GET['product_id'];
             $this->trashWhere('online_products', "product_id = $id");
@@ -165,5 +168,10 @@ class ProductsController extends Controller
         }
 
     }
-    
+    public function searchProducts()
+    {
+        return $this->fetchAll('online_products');
+
+    }
+
 }
