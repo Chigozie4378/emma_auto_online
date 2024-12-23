@@ -170,7 +170,7 @@ $ctr = new ProductsController();
     <script>
   $(".chosen").chosen();
 </script>
-
+<?php include('./includes/_footer.php');?>
 </body>
 
 </html>

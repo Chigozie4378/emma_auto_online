@@ -12,11 +12,11 @@
                 <div class="row gx-2">
                     <div class="col-md-4">
                         <select class="form-control chosen" name="productname" onchange="selectProduct(this.value)" id="productname">
-                            <option value="">Please Select Item</option>
+                            <option value="">Please Select a Product</option>
                             <?php
                             $select = $ctr->searchProducts();
                             while ($row = mysqli_fetch_array($select)) { ?>
-                                <option value="<?php echo $row['name'] ?>">
+                                <option value="<?php echo $row['product_name'] ?>">
                                     <?php echo $row['product_name'] ?>
                                 </option>
                             <?php } ?>

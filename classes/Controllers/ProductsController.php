@@ -173,5 +173,15 @@ class ProductsController extends Controller
         return $this->fetchAll('online_products');
 
     }
+    public function searchModels($product_name)
+    {
+        return $this->fetchWhereAnd('online_products', "product_name = $product_name");
+
+    }
+    public function searchBrands($product_name,$model)
+    {
+        return $this->fetchWhereAnd('online_products', "product_name = $product_name", "model = $model");
+
+    }
 
 }
