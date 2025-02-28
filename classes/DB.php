@@ -3,7 +3,7 @@ class DB{
     protected $host = 'localhost';
     protected $server = 'root';
     protected $password = '';
-    protected $dbname = 'inventory';
+    protected $dbname = 'inventory_online';
 
     public function connect(){
         $conn = new mysqli($this->host,$this->server,$this->password,$this->dbname);

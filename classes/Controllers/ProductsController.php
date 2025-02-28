@@ -2,6 +2,7 @@
 
 class ProductsController extends Controller
 {
+    public $deleteModelSuccess = "";
     public function addProduct()
     {
         if (isset($_POST['upload'])) {
