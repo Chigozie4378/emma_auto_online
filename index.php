@@ -131,15 +131,16 @@ $search_product = $ctr->searchProducts();
     </div>
     <!-- Slider End -->
 
-    <?php
-    include_once "./includes/_search_script.php";
-    ?>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/ajax/search_product.js"></script>
+  
     <script src="./assets/chosen/chosen.js"></script>
     <script>
         $(".chosen").chosen();
     </script>
+    <?php include_once "./tools/search_product.php"?>
 </body>
 
 </html>

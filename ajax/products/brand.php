@@ -5,10 +5,11 @@ $product_name = $_POST['product_name'];
 $model = $_POST['model'];
 $search_brands = $ctr->searchBrands($product_name,$model);
 
-?>
 
-<select class="form-control" style="height:45px;" name="model" id="model"
-    onchange="selectBrand(this.value,'<?php echo $product_name ?>','<?php echo $model ?>')">
+?>
+<label for="">Brand</label>
+<select class="form-control chosen" style="height:45px;" name="brand" id="brand"
+    onchange="productResults(this.value,'<?php echo $product_name ?>','<?php echo $model ?>')">
     <option> Select Brand </option>
     <?php
 
@@ -18,3 +19,7 @@ $search_brands = $ctr->searchBrands($product_name,$model);
         </option>
     <?php } ?>
 </select>
+
+<script>
+        $(".chosen").chosen();
+    </script>
