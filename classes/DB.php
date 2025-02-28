@@ -5,7 +5,7 @@ class DB{
     protected $password = '';
     protected $dbname = 'inventory_online';
 
-    public function connect(){
+    protected function connect(){
         $conn = new mysqli($this->host,$this->server,$this->password,$this->dbname);
         if ($conn->connect_error){
             echo "Failed".$conn->connect_error;
