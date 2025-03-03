@@ -56,49 +56,72 @@ class Model extends DB
         // Close statement and connection
         $stmt->close();
     }
-
-    protected function selectWhereAnd($table_name, $where_array)
+    protected function selectWhereAnd($table_name, $where_clauses, $limit = null, $unique = false)
     {
         $dbconn = $this->connect();
-
-        // Build query string
-        $query = "SELECT * FROM $table_name WHERE ";
-        $where_clause = array();
-        foreach ($where_array as $key => $value) {
-            if (strpos($value, '%') !== false) {
-                $where_clause[] = "$key LIKE ?";
-            } else {
-                $where_clause[] = "$key = ?";
+    
+        // Prepare WHERE conditions
+        $where_array = [];
+        foreach ($where_clauses as $where_clause) {
+            $parts = explode('=', $where_clause);
+            if (count($parts) === 2) {
+                $key = trim($parts[0]);
+                $value = trim($parts[1], " '"); // Remove extra spaces and single quotes
+                $where_array[$key] = '%' . $value . '%'; // Add wildcards
             }
         }
-        $query .= implode(" AND ", $where_clause);
-
-        // Prepare the statement
+    
+        // Handle DISTINCT logic
+        if ($unique && is_string($unique)) {
+            $select_clause = "SELECT DISTINCT $unique";
+        } else {
+            $select_clause = $unique ? "SELECT DISTINCT *" : "SELECT *";
+        }
+    
+        // Build query string
+        $query = "$select_clause FROM $table_name WHERE ";
+        $where_conditions = [];
+        foreach ($where_array as $key => $value) {
+            $where_conditions[] = "$key LIKE ?";
+        }
+        $query .= implode(" AND ", $where_conditions);
+    
+        // Add limit if specified
+        if ($limit !== null) {
+            $query .= " LIMIT ?";
+        }
+    
+        // Prepare statement
         $stmt = $dbconn->prepare($query);
-
+    
         // Bind parameters
         $types = "";
+        $values = [];
         foreach ($where_array as $value) {
-            if (is_int($value)) {
-                $types .= "i";
-            } elseif (is_double($value)) {
-                $types .= "d";
-            } else {
-                $types .= "s";
-            }
+            $types .= "s"; // All values are treated as strings with LIKE
+            $values[] = $value;
         }
-        $stmt->bind_param($types, ...array_values($where_array));
-
+    
+        // Add limit if applicable
+        if ($limit !== null) {
+            $types .= "i";
+            $values[] = $limit;
+        }
+    
+        // Bind values dynamically
+        if (!empty($types)) {
+            $stmt->bind_param($types, ...$values);
+        }
+    
         // Execute the statement
         $stmt->execute();
-
+    
         // Get the result
         $result = $stmt->get_result();
-
+    
         // Close statement and connection
         $stmt->close();
-
-
+    
         // Return the result object
         return $result;
     }
@@ -151,51 +174,76 @@ class Model extends DB
         return $result;
     }
 
-    protected function selectWhereOr($table_name, $where_array)
+    protected function selectWhereOr($table_name, $where_clauses, $limit = null, $unique = false)
     {
         $dbconn = $this->connect();
-
-        // Build query string
-        $query = "SELECT * FROM $table_name WHERE ";
-        $where_clause = array();
-        foreach ($where_array as $key => $value) {
-            if (strpos($value, '%') !== false) {
-                $where_clause[] = "$key LIKE ?";
-            } else {
-                $where_clause[] = "$key = ?";
+    
+        // Prepare WHERE conditions
+        $where_array = [];
+        foreach ($where_clauses as $where_clause) {
+            $parts = explode('=', $where_clause);
+            if (count($parts) === 2) {
+                $key = trim($parts[0]);
+                $value = trim($parts[1], " '"); // Remove extra spaces and single quotes
+                $where_array[$key] = '%' . $value . '%'; // Add wildcards
             }
         }
-        $query .= implode(" OR ", $where_clause);
-
-        // Prepare the statement
+    
+        // Handle DISTINCT logic
+        if ($unique && is_string($unique)) {
+            $select_clause = "SELECT DISTINCT $unique";
+        } else {
+            $select_clause = $unique ? "SELECT DISTINCT *" : "SELECT *";
+        }
+    
+        // Build query string
+        $query = "$select_clause FROM $table_name WHERE ";
+        $where_conditions = [];
+        foreach ($where_array as $key => $value) {
+            $where_conditions[] = "$key LIKE ?";
+        }
+        $query .= implode(" OR ", $where_conditions);
+    
+        // Add limit if specified
+        if ($limit !== null) {
+            $query .= " LIMIT ?";
+        }
+    
+        // Prepare statement
         $stmt = $dbconn->prepare($query);
-
+    
         // Bind parameters
         $types = "";
+        $values = [];
         foreach ($where_array as $value) {
-            if (is_int($value)) {
-                $types .= "i";
-            } elseif (is_double($value)) {
-                $types .= "d";
-            } else {
-                $types .= "s";
-            }
+            $types .= "s"; // All values are treated as strings with LIKE
+            $values[] = $value;
         }
-        $stmt->bind_param($types, ...array_values($where_array));
-
+    
+        // Add limit if applicable
+        if ($limit !== null) {
+            $types .= "i";
+            $values[] = $limit;
+        }
+    
+        // Bind values dynamically
+        if (!empty($types)) {
+            $stmt->bind_param($types, ...$values);
+        }
+    
         // Execute the statement
         $stmt->execute();
-
+    
         // Get the result
         $result = $stmt->get_result();
-
+    
         // Close statement and connection
         $stmt->close();
-
-
+    
         // Return the result object
         return $result;
     }
+    
     protected function selectAll($table_name)
     {
         $dbconn = $this->connect();
@@ -462,12 +510,12 @@ class Model extends DB
     }
     protected function selectDebitHistoryName($customer_name)
     {
-        $select =  mysqli_query($this->connect(), "SELECT * FROM debit_histories WHERE customer_name LIKE '%$customer_name%'  AND id IN (SELECT MAX(id) FROM debit_histories GROUP BY customer_name, customer_address)");
+        $select = mysqli_query($this->connect(), "SELECT * FROM debit_histories WHERE customer_name LIKE '%$customer_name%'  AND id IN (SELECT MAX(id) FROM debit_histories GROUP BY customer_name, customer_address)");
         return $select;
     }
     protected function selectDebitHistoryAddress($customer_name, $customer_address)
     {
-        $select =  mysqli_query($this->connect(), "SELECT * FROM debit_histories WHERE customer_name LIKE '%$customer_name%' AND customer_address LIKE '%$customer_address%'  AND id IN (SELECT MAX(id) FROM debit_histories GROUP BY customer_name, customer_address)");
+        $select = mysqli_query($this->connect(), "SELECT * FROM debit_histories WHERE customer_name LIKE '%$customer_name%' AND customer_address LIKE '%$customer_address%'  AND id IN (SELECT MAX(id) FROM debit_histories GROUP BY customer_name, customer_address)");
         return $select;
     }
 
@@ -617,7 +665,7 @@ class Model extends DB
         $dbconn = $this->connect();
 
         // Construct the subquery
-        
+
         $subquery = "SELECT * FROM $table1
         JOIN $table2 ON $table1.$column = $table2.$column";
 
@@ -638,6 +686,6 @@ class Model extends DB
             echo "Query preparation failed: " . $dbconn->error;
         }
 
-        
+
     }
 }

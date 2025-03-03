@@ -1,0 +1,12 @@
+/* Underline the active nav item */
+.nav-link.active {
+    border-bottom: 3px solid #fff;
+    /* White underline */
+    font-weight: bold;
+    /* Optional: Make it bold */
+}
+
+/* Optional: Add smooth transition */
+.nav-link {
+    transition: border-bottom 0.3s ease-in-out;
+}

@@ -6,7 +6,7 @@ $product_name = $_POST['product_name'];
 $search_models = $ctr->searchModels($product_name); ?>
 
 <label for="">Model</label>
-<select class="form-control chosen" onchange="selectModel(this.value,'<?php echo $product_name ?>')">
+<select class="form-control chosen" id="model" onchange="selectModel(this.value,'<?php echo $product_name ?>')">
     <option selected>Select Model</option>
 
     <?php

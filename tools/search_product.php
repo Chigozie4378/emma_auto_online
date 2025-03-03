@@ -3,8 +3,11 @@
         $(document).ready(function () {
             var product_name = value;
             if (product_name != "") {
+                var ajaxUrl = window.location.href.includes("/pages") 
+                ? "../ajax/products/model.php" 
+                : "./ajax/products/model.php";
                 $.ajax({
-                    url: "./ajax/products/model.php",
+                    url: ajaxUrl,
                     method: "POST",
                     data: {
                         product_name: product_name
@@ -26,8 +29,11 @@
             var model = value1;
             var product_name = value2;
             if (model && product_name != "") {
+                var ajaxUrl = window.location.href.includes("/pages") 
+                ? "../ajax/products/brand.php" 
+                : "./ajax/products/brand.php";
                 $.ajax({
-                    url: "./ajax/products/brand.php",
+                    url: ajaxUrl,
                     method: "POST",
                     data: {
                         model: model,
@@ -50,8 +56,11 @@
             var model = value2;
             var product_name = value3;
             if (brand && model && product_name != "") {
+                var ajaxUrl = window.location.href.includes("/pages") 
+                ? "../ajax/products/product_results.php" 
+                : "./ajax/products/product_results.php";
                 $.ajax({
-                    url: "./ajax/product_results.php",
+                    url: ajaxUrl,
                     method: "POST",
                     data: {
                         brand: brand,

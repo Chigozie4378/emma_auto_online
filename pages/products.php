@@ -1,5 +1,7 @@
 <?php
-session_start();
+include_once "../autoload/loader.php";
+$ctr = new ProductsController();
+$search_product = $ctr->searchProducts();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,35 +9,23 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emma Auto Multi Company</title>
+    <title>Emma Auto Multi Services Company</title>
     <link rel="icon" href="../assets/images/logo/logo.jpg" type="image/gif" sizes="20x20">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../assets/css/nav-desktop.css">
-    <link rel="stylesheet" href="../assets/css/nav-mobile.css">
-    <link rel="stylesheet" href="../assets/css/slider.css">
-    <link rel="stylesheet" href="../assets/css/category-destop.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/chosen/chosen.css">
 </head>
 
 <body>
-    <!-- header -->
-    <?php
-    include '../includes/header.php';
-    include '../includes/search.php';
-    ?>
+    <!-- Navigation start -->
+    <?php include_once "../includes/_navbar.php"; ?>
+    <!-- Navigation End -->
     <div class="container">
-
-        <!-- navigation tab -->
-        <section>
-            <nav>
-                <a href="../">Home</a> <i class='fas fa-angle-right'></i>
-                <a href="#">Category</a> <i class='fas fa-angle-right'></i>
-                <a href="#">Sub Category</a>
-            </nav>
-        </section>
+        <!-- Search Product start -->
+        <?php
+        include "../includes/search.php";
+        ?>
+        <!-- Start Product End -->
 
         <div class="row py-3">
             <!-- Sidebar for medium to large screens -->
@@ -164,12 +154,13 @@ session_start();
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/nav-mobile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
     <script src="../assets/chosen/chosen.js"></script>
     <script>
         $(".chosen").chosen();
     </script>
+    <?php include_once "../tools/search_product.php"?>
 
 </body>
 

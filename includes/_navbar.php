@@ -3,7 +3,7 @@
         <div class="container-fluid px-5"> <!-- Added padding to the container -->
             <!-- Brand on the left -->
             <a class="navbar-brand" href="#">
-                <img src="./assets/images/logo/logo.jpg" class="rounded" height="50" width="50" alt="">
+            <img src="<?php echo ($_SERVER['REQUEST_URI'] == '/emma_auto_online/' ? './assets/images/logo/logo.jpg' : '../assets/images/logo/logo.jpg'); ?>" class="rounded" height="50" width="50" alt="">
             </a>
 
             <!-- Navbar Toggler for Mobile -->

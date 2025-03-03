@@ -184,5 +184,10 @@ class ProductsController extends Controller
         return $this->fetchWhereAnd('online_products', "product_name = $product_name", "model = $model");
 
     }
+    public function fetchSearchProducts($query)
+    {
+        return $this->fetchWhereLikeOr('online_products', "product_name", "product_name = '$query'");
+
+    }
 
 }

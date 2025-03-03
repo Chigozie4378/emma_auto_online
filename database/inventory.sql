@@ -240,7 +240,7 @@ CREATE TABLE `online_products` (
   `manufacturer` varchar(255) DEFAULT NULL,
   `image_path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO online_products VALUES("20","71b0ad3bac450e9","CHAIN AND SPROCKET","AX100","UNIGO","../assets/images/products/CHAIN AND SPROCKET");
 INSERT INTO online_products VALUES("21","30af03e6fdcecee","4 DOTS WHITE LIGHT","AX100","CHANLIN","../assets/images/products/4 DOTS WHITE LIGHT.JPG");
@@ -249,6 +249,7 @@ INSERT INTO online_products VALUES("23","63de832f8a5e9f4","4 MINUTES GUM","CB125
 INSERT INTO online_products VALUES("24","b45858f53ff9329","5 DOTS LIGHT STEADY","CB125","SHIRORO","../assets/images/products/5 DOTS LIGHT STEADY.JPG");
 INSERT INTO online_products VALUES("25","dbfe21c4811455b","6 DOTS LIGHT MULTIPLE","CB125","SHIRORO","../assets/images/products/6 DOTS LIGHT MULTIPLE.JPG");
 INSERT INTO online_products VALUES("26","aad8178944fc2a9","6 DOTS LIGHT ORIGINAL","CB125","SHIRORO","../assets/images/products/6 DOTS LIGHT ORIGINAL.JPG");
+INSERT INTO online_products VALUES("28","8e0ec62b4a5b21d","CHAIN AND SPROCKET","CB110","CHANLIN","../assets/images/products/CHAIN AND SPROCKET");
 
 
 

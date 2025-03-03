@@ -32,17 +32,25 @@ class Controller extends Model
     // select all datas
     return $this->selectAllDescLimit("$table_name");
   }
-  protected function fetchWhereAnd($table_name, ...$where_clauses)
+  protected function fetchWhereAnd($table_name, ...$params)
   {
-    $where_array = array();
-    foreach ($where_clauses as $where_clause) {
-      $parts = explode('=', $where_clause);
-      $key = trim($parts[0]);
-      $value = trim($parts[1]);
-      $where_array[$key] = $value;
+    // Default values
+    $limit = null;
+    $unique = false; // Can be column name or false
+    $where_clauses = [];
+
+    // Loop through parameters to detect limit and unique values
+    foreach ($params as $param) {
+        if (is_int($param)) {
+            $limit = $param; // Assign integer as limit
+        } elseif (is_string($param) && count($where_clauses) == 0 && $unique === false) {
+            $unique = $param; // First string is treated as unique column
+        } else {
+            $where_clauses[] = $param; // Collect conditions
+        }
     }
 
-    return $this->selectWhereAnd($table_name, $where_array);
+    return $this->selectWhereAnd($table_name, $where_clauses, $limit, $unique);
   }
   protected function fetchWhereAndLimit($table_name, ...$where_clauses)
   {
@@ -68,41 +76,67 @@ class Controller extends Model
 
     return $this->selectWhereAndDesc($table_name, $where_array);
   }
-  protected function fetchWhereOr($table_name, ...$where_clauses)
+  protected function fetchWhereOr($table_name, ...$params)
   {
-    $where_array = array();
-    foreach ($where_clauses as $where_clause) {
-      $parts = explode('=', $where_clause);
-      $key = trim($parts[0]);
-      $value = trim($parts[1]);
-      $where_array[$key] = $value;
+    // Default values
+    $limit = null;
+    $unique = false; // Can be column name or false
+    $where_clauses = [];
+
+    // Loop through parameters to detect limit and unique values
+    foreach ($params as $param) {
+      if (is_int($param)) {
+        $limit = $param; // Assign integer as limit
+      } elseif (is_string($param) && count($where_clauses) == 0 && $unique === false) {
+        $unique = $param; // First string is treated as unique column
+      } else {
+        $where_clauses[] = $param; // Collect conditions
+      }
     }
 
-    return $this->selectWhereOr($table_name, $where_array);
+    return $this->selectWhereOr($table_name, $where_clauses, $limit, $unique);
   }
-  protected function fetchWhereLikeOr($table_name, ...$where_clauses)
+  protected function fetchWhereLikeOr($table_name, ...$params)
   {
-    $where_array = array();
-    foreach ($where_clauses as $where_clause) {
-      $parts = explode('=', $where_clause);
-      $key = trim($parts[0]);
-      $value = trim($parts[1]);
-      $where_array[$key] = '%' . $value . '%'; // Add wildcards to value
+    // Default values
+    $limit = null;
+    $unique = false; // Can be column name or false
+    $where_clauses = [];
+
+    // Loop through parameters to detect limit and unique values
+    foreach ($params as $param) {
+      if (is_int($param)) {
+        $limit = $param; // Assign integer as limit
+      } elseif (is_string($param) && count($where_clauses) == 0 && $unique === false) {
+        $unique = $param; // First string is treated as unique column
+      } else {
+        $where_clauses[] = $param; // Collect conditions
+      }
     }
 
-    return $this->selectWhereOr($table_name, $where_array);
+    return $this->selectWhereOr($table_name, $where_clauses, $limit, $unique);
   }
-  protected function fetchWhereLikeAnd($table_name, ...$where_clauses)
+
+
+  protected function fetchWhereLikeAnd($table_name, ...$params)
   {
-    $where_array = array();
-    foreach ($where_clauses as $where_clause) {
-      $parts = explode('=', $where_clause);
-      $key = trim($parts[0]);
-      $value = trim($parts[1]);
-      $where_array[$key] = '%' . $value . '%'; // Add wildcards to value
+    // Default values
+    $limit = null;
+    $unique = false; // Can be column name or false
+    $where_clauses = [];
+
+    // Loop through parameters to detect limit and unique values
+    foreach ($params as $param) {
+        if (is_int($param)) {
+            $limit = $param; // Assign integer as limit
+        } elseif (is_string($param) && count($where_clauses) == 0 && $unique === false) {
+            $unique = $param; // First string is treated as unique column
+        } else {
+            $where_clauses[] = $param; // Collect conditions
+        }
     }
 
-    return $this->selectWhereAnd($table_name, $where_array);
+    return $this->selectWhereAnd($table_name, $where_clauses, $limit, $unique);
   }
 
   protected function trashWhere($table_name, ...$where_clauses)
@@ -140,15 +174,15 @@ class Controller extends Model
 
   protected function showDebitHistories()
   {
-    return  $this->selectDebitHistories();
+    return $this->selectDebitHistories();
   }
   protected function showDebitHistoryName($customer_name)
   {
-    return  $this->selectDebitHistoryName($customer_name);
+    return $this->selectDebitHistoryName($customer_name);
   }
   protected function showDebitHistoryAddress($customer_name, $customer_address)
   {
-    return  $this->selectDebitHistoryAddress($customer_name, $customer_address);
+    return $this->selectDebitHistoryAddress($customer_name, $customer_address);
   }
 
   protected function fetchWhereAndLimit50($table_name, ...$where_clauses)

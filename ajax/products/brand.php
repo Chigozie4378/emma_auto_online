@@ -8,7 +8,7 @@ $search_brands = $ctr->searchBrands($product_name,$model);
 
 ?>
 <label for="">Brand</label>
-<select class="form-control chosen" style="height:45px;" name="brand" id="brand"
+<select class="form-control chosen" name="brand" id="brand"
     onchange="productResults(this.value,'<?php echo $product_name ?>','<?php echo $model ?>')">
     <option> Select Brand </option>
     <?php
