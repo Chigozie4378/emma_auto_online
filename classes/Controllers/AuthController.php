@@ -25,7 +25,7 @@ class AuthController extends Controller
             
 
             // Fetch user data from the database based on the provided phone number
-            $phone_no_exist = $this->fetchWhereAnd('online_customer', "phone_no= $phone_no");
+            $phone_no_exist = $this->fetchResult('online_customer', where:["phone_no= $phone_no"]);
             
             if (mysqli_num_rows($phone_no_exist) >0){
 
@@ -71,7 +71,7 @@ class AuthController extends Controller
             
 
             // Fetch user data from the database based on the provided phone number
-            $username_exist = $this->fetchWhereAnd('online_admin', "username= $username");
+            $username_exist = $this->fetchResult('online_admin', where:["username= $username"]);
             
             if (mysqli_num_rows($username_exist) >0){
 
@@ -116,7 +116,7 @@ class AuthController extends Controller
             // Generate and validate unique UUID for customer_id
             do {
                 $customer_id = bin2hex(random_bytes(16)); // Generates a 32-character unique ID
-                $result = $this->fetchWhereAnd('online_customer', "customer_id = '$customer_id'");
+                $result = $this->fetchResult('online_customer', where:["customer_id = $customer_id"]);
             } while (mysqli_num_rows($result) > 0); // Keep generating until a unique ID is found
 
             if (empty(Form::test_input(filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS)))) {
@@ -147,8 +147,8 @@ class AuthController extends Controller
                 $phone_number = Form::test_input(filter_input(INPUT_POST, 'phone_no', FILTER_SANITIZE_NUMBER_INT));
 
                 // Check if phone number already exists in the database
-                $phone_no_exist = $this->fetchWhereAnd('online_customer', "phone_no = '$phone_number'");
-                if (mysqli_num_rows($phone_no_exist) > 0) { // Assuming fetchWhereAnd returns data if a record exists
+                $phone_no_exist = $this->fetchResult('online_customer', where:["phone_no = $phone_number"]);
+                if (mysqli_num_rows($phone_no_exist) > 0) { 
                     $this->phone_no_existErr = "Phone number is already registered";
                 }
             }
@@ -190,7 +190,7 @@ class AuthController extends Controller
             // Generate and validate unique UUID for customer_id
             do {
                 $customer_id = bin2hex(random_bytes(16)); // Generates a 32-character unique ID
-                $result = $this->fetchWhereAnd('online_customer', "customer_id = '$customer_id'");
+                $result = $this->fetchResult('online_customer', where:["customer_id = $customer_id"]);
             } while (mysqli_num_rows($result) > 0); // Keep generating until a unique ID is found
 
             if (empty(Form::test_input(filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS)))) {
@@ -221,8 +221,8 @@ class AuthController extends Controller
                 $phone_number = Form::test_input(filter_input(INPUT_POST, 'phone_no', FILTER_SANITIZE_NUMBER_INT));
 
                 // Check if phone number already exists in the database
-                $phone_no_exist = $this->fetchWhereAnd('online_customer', "phone_no = '$phone_number'");
-                if (mysqli_num_rows($phone_no_exist) > 0) { // Assuming fetchWhereAnd returns data if a record exists
+                $phone_no_exist = $this->fetchResult('online_customer', where:["phone_no = $phone_number"]);
+                if (mysqli_num_rows($phone_no_exist) > 0) { 
                     $this->phone_no_existErr = "Phone number is already registered";
                 }
             }

@@ -35,28 +35,31 @@ class ProductsController extends Controller
 
             $target_file = $target_dir . basename($name);
 
-            $product_exists = $this->fetchWhereAnd("online_products", "product_name = '$name'", "model = '$model'", "manufacturer = '$manufacturer'");
+            $product_exists = $this->fetchResult("online_products", where: ["product_name=$name", "model=$model", "manufacturer=$manufacturer"]);
+
             if (mysqli_num_rows($product_exists) > 0) {
                 $failed_uploads[] = "$name $model $manufacturer' has already been uploaded.";
 
-            }
-
-            if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
-                do {
-                    $unique_id = uniqid();
-                    $hash = md5($unique_id);
-                    $product_id = substr($hash, 0, 15);
-
-                    // Check if the ID already exists in the database
-                    $row = $this->fetchWhereAnd("online_products", "product_id = '$product_id'");
-                } while (mysqli_num_rows($row) > 0);
-
-                $this->insert('online_products', $product_id, $name, $model, $manufacturer, $target_file);
-
-                $successful_uploads[] = $name; // Add to successful uploads
             } else {
-                $failed_uploads[] = "Sorry, there was an error uploading '$name'.";
+                if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
+                    do {
+                        $unique_id = uniqid();
+                        $hash = md5($unique_id);
+                        $product_id = substr($hash, 0, 15);
+
+                        // Check if the ID already exists in the database
+                        $row = $this->fetchResult("online_products", where: ["product_id = $product_id"]);
+                    } while (mysqli_num_rows($row) > 0);
+
+                    $this->insert('online_products', $product_id, $name, $model, $manufacturer, $target_file);
+
+                    $successful_uploads[] = $name; // Add to successful uploads
+                } else {
+                    $failed_uploads[] = "Sorry, there was an error uploading '$name'.";
+                }
             }
+
+
         }
         // Consolidate messages
         if (!empty($successful_uploads)) {
@@ -115,7 +118,7 @@ class ProductsController extends Controller
                         $product_id = substr($hash, 0, 15);
 
                         // Check if the ID already exists in the database
-                        $row = $this->fetchWhereAnd("online_products", "product_id = '$product_id'");
+                        $row = $this->fetchResult("online_products", where: ["product_id = $product_id"]);
                     } while (mysqli_num_rows($row) > 0);
 
                     $this->insert('online_products', $product_id, pathinfo($name, PATHINFO_FILENAME), "", "", $target_file);
@@ -144,7 +147,7 @@ class ProductsController extends Controller
     }
     public function showAllProducts()
     {
-        $products = $this->fetchAll("online_products");
+        $products = $this->fetchResult("online_products");
 
         return $products;
     }
@@ -171,22 +174,24 @@ class ProductsController extends Controller
     }
     public function searchProducts()
     {
-        return $this->fetchAll('online_products');
+        return $this->fetchResult("online_products", distinct: "product_name");
 
     }
     public function searchModels($product_name)
     {
-        return $this->fetchWhereAnd('online_products', "product_name = $product_name");
+        return $this->fetchResult("online_products", distinct: "model", where: ["product_name = $product_name"], oper: ["LIKE"]);
 
     }
-    public function searchBrands($product_name,$model)
+    public function searchBrands($product_name, $model)
     {
-        return $this->fetchWhereAnd('online_products', "product_name = $product_name", "model = $model");
+        return $this->fetchResult("online_products", where: ["product_name = $product_name", "model = $model"], oper: ["LIKE", "LIKE"], distinct: "manufacturer");
 
     }
     public function fetchSearchProducts($query)
     {
-        return $this->fetchWhereLikeOr('online_products', "product_name", "product_name = '$query'");
+
+        return $this->fetchResult('online_products', distinct: "product_name", where: ["product_name = $query"], cols: "product_name", oper: ["LIKE"]);
+
 
     }
 
