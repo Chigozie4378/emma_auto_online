@@ -1,10 +1,17 @@
-RewriteEngine On    # Turn on the rewriting engine
+RewriteEngine On
+RewriteBase /emma_auto_online
 
-# Only apply the rewrite if the request is not for an actual directory
+# Exclude the custom 404 page from rewriting
+RewriteCond %{REQUEST_URI} !^/emma_auto_online/404\.html$ [NC]
+# If the original request (THE_REQUEST) contains ".php", redirect externally to the custom 404 page
+RewriteCond %{THE_REQUEST} \.php [NC]
+RewriteRule .* 404.html [R=302,L]
+
+# For clean URLs: if the request is not for an existing directory or file, internally rewrite to .php
+RewriteCond %{REQUEST_URI} !^/emma_auto_online/404\.html$ [NC]
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Only apply the rewrite if the request is not for an actual file
 RewriteCond %{REQUEST_FILENAME} !-f
-
-# Rewrite requests that do not have a period (other than hidden files) to the .php version
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+# Set the custom 404 error document with the proper path
+ErrorDocument 404 /emma_auto_online/404.html

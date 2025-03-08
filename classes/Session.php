@@ -4,7 +4,7 @@ class Session extends Controller
 
   public function checkStatus()
   {
-    $status_result = $this->fetchWhereAnd('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 1");
+    $status_result = $this->fetchResult('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 1");
     $status = mysqli_fetch_array($status_result);
     if ($status['status'] ==1){
       new Redirect('index');
@@ -12,7 +12,7 @@ class Session extends Controller
   }
   public function userLoggedIn($username)
   {
-    $status_result = $this->fetchWhereAnd('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 0");
+    $status_result = $this->fetchResult('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 0");
     $status = mysqli_fetch_array($status_result);
     if ($status['status'] ==1){
       new Redirect('index');
@@ -20,7 +20,7 @@ class Session extends Controller
   }
   public function userLoggedOut($username)
   {
-    $status_result = $this->fetchWhereAnd('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 0");
+    $status_result = $this->fetchResult('online_customer', "phone_no= '" . $_SESSION['phone_no'] . "'","status= 0");
     $status = mysqli_fetch_array($status_result);
     if ($status['status'] ==1){
       new Redirect('index');
@@ -59,10 +59,16 @@ class Session extends Controller
     }
   }
 
-  public static function access($username)
+  public static function set($username)
+  {
+    if (isset($_SESSION["$username"])) {
+      new Redirect('./pages/home');
+    }
+  }
+  public static function notSet($username)
   {
     if (!isset($_SESSION["$username"])) {
-      new Redirect('user_login.php');
+      new Redirect('./pages/home');
     }
   }
 
