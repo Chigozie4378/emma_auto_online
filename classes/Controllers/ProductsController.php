@@ -198,7 +198,7 @@ class ProductsController extends Controller
     {
         if (isset($_GET['pname'])) {
             $pname = $_GET['pname'];
-            return $this->fetchResult('online_products',  where: ["product_name = $pname"]);
+            return $this->fetchResult('online_products',  where: ["product_name = $pname"], oper:["LIKE"]);
         }
         
 

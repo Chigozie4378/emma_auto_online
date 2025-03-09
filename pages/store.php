@@ -3,6 +3,10 @@ include "../autoload/loader.php";
 $ctr = new ProductsController();
 $products = $ctr->productName();
 $totalProducts = $products->num_rows;
+if ($_SERVER['REQUEST_URI'] == "/emma_auto_online/pages/store" && $totalProducts == 0) {
+  header("Location: /emma_auto_online/");
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -153,7 +157,7 @@ $totalProducts = $products->num_rows;
   <?php include "../includes/_navbar.php"; ?>
 
   <div class="container mt-4">
-    <h2 class="text-center">Product Details</h2>
+    <h2 class="text-center">Results</h2>
     <!-- Bootstrap Grid System -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
       <?php if ($totalProducts > 0): ?>

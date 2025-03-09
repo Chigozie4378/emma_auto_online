@@ -1,16 +1,10 @@
-
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".collapse .list-unstyled a, .dropdown-menu .dropdown-item, .navbar-nav .nav-link")
-        .forEach(el => el.style.textDecoration = "none");
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    function showSearchResults(inputId, resultsId) {
+    function showSearchResults(inputId, resultsId, buttonId) {
         const input = document.getElementById(inputId);
         const resultsBox = document.getElementById(resultsId);
+        const searchButton = document.getElementById(buttonId); // Get the button explicitly
 
+        // Auto-suggest functionality
         input.addEventListener("input", function () {
             let query = this.value.trim();
             if (query.length === 0) {
@@ -32,8 +26,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 })
                 .catch(error => console.error("Error fetching search results:", error));
-
         });
+
+        // Handle Enter key on input field
+        input.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent default form submission
+                processSearch(input.value);
+            }
+        });
+
+        // Handle search button click
+        if (searchButton) {
+            searchButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                processSearch(input.value);
+            });
+        }
 
         // Hide results when clicking outside
         document.addEventListener("click", function (event) {
@@ -43,8 +52,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    showSearchResults("desktopSearch", "desktopResults");
-    showSearchResults("mobileSearch", "mobileResults");
+    // Function to process search query
+    function processSearch(query) {
+        query = query.trim();
+        if (query === "") {
+            window.location.href = "/emma_auto_online/";
+        } else {
+            window.location.href = "/emma_auto_online/pages/store?pname=" + encodeURIComponent(query);
+        }
+    }
+
+    // Initialize search functionality for both desktop and mobile
+    showSearchResults("desktopSearch", "desktopResults", "desktopSearchButton");
+    showSearchResults("mobileSearch", "mobileResults", "mobileSearchButton");
 });
 
 
@@ -70,4 +90,3 @@ document.addEventListener('DOMContentLoaded', function () {
   
     observer.observe(menuCart);
   });
-
