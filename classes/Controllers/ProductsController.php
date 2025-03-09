@@ -212,5 +212,13 @@ class ProductsController extends Controller
         }
 
     }
+    public function pMenu()
+    {
+        if (isset($_GET['pmenu'])) {
+            $pmenu = $_GET['pmenu'];
+            return $this->fetchResult('online_products',  where: ["model = $pmenu","manufacturer = $pmenu"], oper:["LIKE"],log: ["OR"]);
+        }
+
+    }
 
 }

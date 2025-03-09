@@ -8,6 +8,7 @@ function isActive($page)
 <?php
 include_once "./autoload/loader.php";
 $ctr = new ProductsController();
+$unit = new UnitsController();
 $search_product = $ctr->searchProducts();
 ?>
 
@@ -46,7 +47,8 @@ $search_product = $ctr->searchProducts();
         <div class="flex-grow-1 d-flex justify-content-center">
             <div class="search-container">
                 <div class="search-bar d-flex align-items-center bg-white rounded overflow-hidden border">
-                    <button id="desktopFilterButton" class="btn btn-outline-secondary px-3" type="button"><i class="fas fa-filter"></i></button>
+                    <button id="desktopFilterButton" class="btn btn-outline-secondary px-3" type="button"><i
+                            class="fas fa-filter"></i></button>
                     <input type="text" class="form-control border-0 search-input" placeholder="Search products..."
                         id="desktopSearch">
                     <button class="btn btn-primary px-3" type="button" id="desktopSearchButton"><i
@@ -85,10 +87,12 @@ $search_product = $ctr->searchProducts();
                         data-bs-toggle="dropdown" aria-expanded="false">Shop by Brand</a>
                     <ul class="dropdown-menu w-100" aria-labelledby="brandDropdown">
                         <div class="d-flex flex-wrap">
-                            <li><a class="dropdown-item" href="#">Brand 1</a></li>
-                            <li><a class="dropdown-item" href="#">Brand 2</a></li>
-                            <li><a class="dropdown-item" href="#">Brand 3</a></li>
-                            <li><a class="dropdown-item" href="#">Brand 4</a></li>
+                            <?php
+                            $brands = $unit->showAllManufacturer();
+                            foreach ($brands as $brand) {
+                                echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($brand["name"]) . '">' . htmlspecialchars($brand["name"]) . '</a></li>';
+                            }
+                            ?>
                         </div>
                     </ul>
                 </li>
@@ -99,10 +103,12 @@ $search_product = $ctr->searchProducts();
                         data-bs-toggle="dropdown" aria-expanded="false">Shop by Model</a>
                     <ul class="dropdown-menu w-100" aria-labelledby="modelDropdown">
                         <div class="d-flex flex-wrap">
-                            <li><a class="dropdown-item" href="#">Model 1</a></li>
-                            <li><a class="dropdown-item" href="#">Model 2</a></li>
-                            <li><a class="dropdown-item" href="#">Model 3</a></li>
-                            <li><a class="dropdown-item" href="#">Model 4</a></li>
+                            <?php
+                            $models = $unit->showAllModel();
+                            foreach ($models as $model) {
+                                echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($model["name"]) . '">' . htmlspecialchars($model["name"]) . '</a></li>';
+                            }
+                            ?>
                         </div>
                     </ul>
                 </li>
@@ -138,18 +144,22 @@ $search_product = $ctr->searchProducts();
                 <a class="dropdown-toggle text-dark d-block py-2" data-bs-toggle="dropdown" href="#">Shop by
                     Brand</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Brand 1</a></li>
-                    <li><a class="dropdown-item" href="#">Brand 2</a></li>
-                    <li><a class="dropdown-item" href="#">Brand 3</a></li>
+                    <?php
+                    foreach ($brands as $brand) {
+                        echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($brand["name"]) . '">' . htmlspecialchars($brand["name"]) . '</a></li>';
+                    }
+                    ?>
                 </ul>
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle text-dark d-block py-2" data-bs-toggle="dropdown" href="#">Shop by
                     Model</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Model 1</a></li>
-                    <li><a class="dropdown-item" href="#">Model 2</a></li>
-                    <li><a class="dropdown-item" href="#">Model 3</a></li>
+                <?php
+                foreach ($models as $model) {
+                    echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($model["name"]) . '">' . htmlspecialchars($model["name"]) . '</a></li>';
+                }
+                ?>
                 </ul>
             </li>
             <li><a href="#" class="text-dark d-block py-2">Shop</a></li>
@@ -164,7 +174,8 @@ $search_product = $ctr->searchProducts();
     <div class="container">
         <div class="mobile-search-container">
             <div class="input-group">
-                <button id="mobileFilterButton" class="btn btn-primary" type="button"><i class="fas fa-filter"></i></button>
+                <button id="mobileFilterButton" class="btn btn-primary" type="button"><i
+                        class="fas fa-filter"></i></button>
                 <input type="text" class="form-control search-input" placeholder="Search products..." id="mobileSearch">
                 <button class="btn btn-primary" type="button" id="mobileSearchButton"><i
                         class="fas fa-search"></i></button>
@@ -185,45 +196,45 @@ $search_product = $ctr->searchProducts();
 
 
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered"> 
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="filterModalLabel">Filter Products</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Product Dropdown -->
-        <div class="mb-3">
-          <label for="productSelect" class="form-label">Product Name</label>
-          <select id="productSelect" class="form-control chosen">
-            <option value="">Select a Product Name</option>
-            <?php
-            // Populate options from your query (adjust as needed)
-            while ($row = mysqli_fetch_array($search_product)) { ?>
-              <option value="<?php echo $row['product_name']; ?>">
-                <?php echo $row['product_name']; ?>
-              </option>
-            <?php } ?>
-          </select>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter Products</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Product Dropdown -->
+                <div class="mb-3">
+                    <label for="productSelect" class="form-label">Product Name</label>
+                    <select id="productSelect" class="form-control chosen">
+                        <option value="">Select a Product Name</option>
+                        <?php
+                        // Populate options from your query (adjust as needed)
+                        while ($row = mysqli_fetch_array($search_product)) { ?>
+                            <option value="<?php echo $row['product_name']; ?>">
+                                <?php echo $row['product_name']; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <!-- Model Dropdown -->
+                <div class="mb-3">
+                    <label for="modelSelect" class="form-label">Model</label>
+                    <select id="modelSelect" class="form-control chosen">
+                        <option value="">Select a Model</option>
+                    </select>
+                </div>
+                <!-- Manufacturer/Brand Dropdown -->
+                <div class="mb-3">
+                    <label for="brandSelect" class="form-label">Brand</label>
+                    <select id="brandSelect" class="form-control chosen">
+                        <option value="">Select a Brand</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="filterSearchBtn" class="btn btn-primary">Search</button>
+            </div>
         </div>
-        <!-- Model Dropdown -->
-        <div class="mb-3">
-          <label for="modelSelect" class="form-label">Model</label>
-          <select id="modelSelect" class="form-control chosen">
-            <option value="">Select a Model</option>
-          </select>
-        </div>
-        <!-- Manufacturer/Brand Dropdown -->
-        <div class="mb-3">
-          <label for="brandSelect" class="form-label">Brand</label>
-          <select id="brandSelect" class="form-control chosen">
-            <option value="">Select a Brand</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="filterSearchBtn" class="btn btn-primary">Search</button>
-      </div>
     </div>
-  </div>
 </div>
