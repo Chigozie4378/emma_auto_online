@@ -29,7 +29,7 @@ $ctr->deleteProduct();
             <button class="btn btn-outline-secondary me-2">
                 <i class="fas fa-file-export me-2"></i>Export
             </button>
-            <a href="add_product.php" class="btn btn-primary">
+            <a href="add_product" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Add New Product
             </a>
         </div>
@@ -111,7 +111,7 @@ $ctr->deleteProduct();
                             </td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-link text-danger">
-                                    <a class="text-danger" href="view_products.php?product_id=<?php echo $id;?>"><i class="fas fa-trash"></i></a>
+                                    <a class="text-danger" href="view_products?product_id=<?php echo $id;?>"><i class="fas fa-trash"></i></a>
                                     
                                 </button>
                             </td>

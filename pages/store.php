@@ -6,6 +6,7 @@ $totalProducts = $products->num_rows;
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +16,15 @@ $totalProducts = $products->num_rows;
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../assets/css/navbar.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;500&display=swap"
+    rel="stylesheet">
 
   <style>
     body {
       font-family: 'Amazon Ember', Arial, sans-serif;
     }
+
     .product-card {
       border: 1px solid #ddd;
       padding: 10px;
@@ -33,9 +37,11 @@ $totalProducts = $products->num_rows;
       flex-direction: column;
       align-items: center;
     }
+
     .product-card:hover {
       transform: scale(1.05);
     }
+
     .product-image {
       width: 100%;
       height: 180px;
@@ -43,6 +49,7 @@ $totalProducts = $products->num_rows;
       border-radius: 8px;
       cursor: pointer;
     }
+
     .product-info {
       flex-grow: 1;
       display: flex;
@@ -51,6 +58,7 @@ $totalProducts = $products->num_rows;
       padding-top: 5px;
       width: 100%;
     }
+
     .product-name {
       font-size: 15px;
       color: #333;
@@ -60,6 +68,7 @@ $totalProducts = $products->num_rows;
       font-family: Arial, Helvetica, sans-serif;
       font-weight: 600;
     }
+
     .product-details {
       font-size: 12px;
       color: #333;
@@ -68,6 +77,7 @@ $totalProducts = $products->num_rows;
       font-family: Arial, Helvetica, sans-serif;
       font-weight: 500;
     }
+
     .quantity-input {
       width: 60px;
       text-align: center;
@@ -76,6 +86,7 @@ $totalProducts = $products->num_rows;
       border-radius: 5px;
       margin-top: 5px;
     }
+
     .btn-add-cart {
       background-color: #375bf7;
       color: white;
@@ -86,12 +97,15 @@ $totalProducts = $products->num_rows;
       font-size: 14px;
       margin-top: 5px;
     }
+
     .btn-add-cart:hover {
       background-color: #003366;
     }
+
     /* Custom overlay styling for the enlarged image */
     .image-frame {
-      display: none; /* Hidden by default */
+      display: none;
+      /* Hidden by default */
       position: fixed;
       z-index: 1000;
       left: 0;
@@ -102,6 +116,7 @@ $totalProducts = $products->num_rows;
       background-color: rgba(0, 0, 0, 0.8);
       animation: fadeIn 0.5s;
     }
+
     .frame-content {
       margin: auto;
       display: block;
@@ -111,6 +126,7 @@ $totalProducts = $products->num_rows;
       border-radius: 8px;
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     }
+
     .close {
       position: absolute;
       top: 20px;
@@ -120,12 +136,19 @@ $totalProducts = $products->num_rows;
       font-weight: bold;
       cursor: pointer;
     }
+
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
   </style>
 </head>
+
 <body>
   <?php include "../includes/_navbar.php"; ?>
 
@@ -137,19 +160,21 @@ $totalProducts = $products->num_rows;
         <?php foreach ($products as $product): ?>
           <div class="col">
             <div class="product-card">
-              <img src="<?php echo htmlspecialchars($product['image_path']); ?>" alt="Product Image"
-                   class="product-image"
-                   onclick="openImageFrame('<?php echo htmlspecialchars($product['image_path']); ?>')">
+              <img src="<?php echo htmlspecialchars($product['image_path']); ?>" alt="Product Image" class="product-image"
+                onclick="openImageFrame('<?php echo htmlspecialchars($product['image_path']); ?>')">
               <div class="product-info">
                 <div class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></div>
                 <div class="product-details">
                   <span><?php echo htmlspecialchars($product['model']); ?></span>
                   <span><?php echo htmlspecialchars($product['manufacturer']); ?></span>
                 </div>
-                <div class="d-flex align-items-center gap-2 text-center">
+                <div class="d-flex justify-content-center align-items-center gap-2">
                   <label for="quantity_<?php echo $product['product_id']; ?>" class="mb-0">Qty:</label>
-                  <input type="number" id="quantity_<?php echo $product['product_id']; ?>" class="quantity-input" value="1" min="1">
+                  <input type="number" id="quantity_<?php echo $product['product_id']; ?>" class="quantity-input" value="1"
+                    min="1">
                 </div>
+
+
                 <button class="btn-add-cart" onclick="addToCart(<?php echo $product['product_id']; ?>)">Add to Cart</button>
               </div>
             </div>
@@ -170,7 +195,7 @@ $totalProducts = $products->num_rows;
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/navbar.js"></script>
-  
+
   <script>
     // Open the custom image frame with the clicked image source
     function openImageFrame(imageSrc) {
@@ -184,7 +209,7 @@ $totalProducts = $products->num_rows;
     }
 
     // Optional: Close the image frame if the user clicks outside the image content
-    document.getElementById("imageFrame").onclick = function(event) {
+    document.getElementById("imageFrame").onclick = function (event) {
       if (event.target == this) {
         closeImageFrame();
       }
@@ -202,16 +227,17 @@ $totalProducts = $products->num_rows;
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `product_id=${productId}&quantity=${quantity}`
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert("Added to cart successfully!");
-        } else {
-          alert("Failed to add to cart.");
-        }
-      })
-      .catch(error => console.error("Error adding to cart:", error));
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("Added to cart successfully!");
+          } else {
+            alert("Failed to add to cart.");
+          }
+        })
+        .catch(error => console.error("Error adding to cart:", error));
     }
   </script>
 </body>
+
 </html>

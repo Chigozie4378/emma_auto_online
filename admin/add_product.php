@@ -9,7 +9,7 @@ $manufacturers = $ctr1->showAllManufacturer();
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Add New Product</h2>
-        <a href="view_products.php" class="btn btn-outline-primary">
+        <a href="view_products" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left me-2"></i>Back to Products
         </a>
     </div>
