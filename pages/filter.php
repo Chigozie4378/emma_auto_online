@@ -1,10 +1,10 @@
 <?php
 include "../autoload/loader.php";
 $ctr = new ProductsController();
-$products = $ctr->productName();
+$products = $ctr->filterProduct();
 $search_product = $ctr->searchProducts();
 $totalProducts = $products->num_rows;
-if ($_SERVER['REQUEST_URI'] == "/emma_auto_online/pages/store" && $totalProducts == 0) {
+if ($_SERVER['REQUEST_URI'] == "/emma_auto_online/pages/filter" && $totalProducts == 0) {
   header("Location: /emma_auto_online/");
   exit;
 }

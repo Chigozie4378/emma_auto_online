@@ -2,21 +2,16 @@
 include_once "../../autoload/loader.php";
 $ctr = new ProductsController();
 $product_name = $_POST['product_name'];
-
-$search_models = $ctr->searchModels($product_name); ?>
-
-<label for="">Model</label>
-<select class="form-control chosen" id="model" onchange="selectModel(this.value,'<?php echo $product_name ?>')">
-    <option selected>Select Model</option>
-
-    <?php
-    while ($row = mysqli_fetch_array($search_models)) { ?>
-        <option value="<?php echo $row['model'] ?>">
-            <?php echo ($row['model']) ?>
-        </option>
-
-    <?php } ?>
-</select>
+$search_models = $ctr->searchModels($product_name);
+echo '<option value="">Select a Model</option>';
+// Return just <option> tags:
+while ($row = mysqli_fetch_array($search_models)) {
+    
+    echo '<option value="' . htmlspecialchars($row['model']) . '">';
+    echo htmlspecialchars($row['model']);
+    echo '</option>';
+}
+?>
 
     <script>
         $(".chosen").chosen();

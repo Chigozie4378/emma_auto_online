@@ -200,8 +200,16 @@ class ProductsController extends Controller
             $pname = $_GET['pname'];
             return $this->fetchResult('online_products',  where: ["product_name = $pname"], oper:["LIKE"]);
         }
-        
 
+    }
+    public function filterProduct()
+    {
+        if (isset($_GET['product'], $_GET['model'], $_GET['manufacturer'])) {
+            $product_name =$_GET['product'];
+            $model = $_GET['model'];
+            $manufacturer = $_GET['manufacturer'];
+            return $this->fetchResult('online_products',  where: ["product_name = $product_name","model = $model","manufacturer = $manufacturer"], oper:["LIKE","LIKE","LIKE"]);
+        }
 
     }
 

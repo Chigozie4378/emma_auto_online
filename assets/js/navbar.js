@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Handle Enter key on input field
-        input.addEventListener("keydown", function(event) {
+        input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 event.preventDefault(); // Prevent default form submission
                 processSearch(input.value);
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Handle search button click
         if (searchButton) {
-            searchButton.addEventListener("click", function(event) {
+            searchButton.addEventListener("click", function (event) {
                 event.preventDefault();
                 processSearch(input.value);
             });
@@ -72,21 +72,104 @@ document.addEventListener('DOMContentLoaded', function () {
     // Select the header cart icon in the mobile nav.
     var menuCart = document.querySelector('.main-nav.d-lg-none a.text-dark.position-relative');
     var floatingCart = document.querySelector('.floating-cart');
-  
+
     if (!menuCart || !floatingCart) return;
-  
+
     // Create an Intersection Observer to check if the header cart is visible.
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          // Header cart is visible, so hide the floating cart.
-          floatingCart.style.display = 'none';
-        } else {
-          // Header cart is not visible, so show the floating cart.
-          floatingCart.style.display = 'block';
-        }
-      });
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                // Header cart is visible, so hide the floating cart.
+                floatingCart.style.display = 'none';
+            } else {
+                // Header cart is not visible, so show the floating cart.
+                floatingCart.style.display = 'block';
+            }
+        });
     }, { threshold: 0 });
-  
+
     observer.observe(menuCart);
-  });
+});
+
+
+// Search Filter
+$(document).ready(function () {
+    // Initialize the Bootstrap modal instance
+    var filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
+
+    // Open the modal when either filter button is clicked
+    $("#desktopFilterButton, #mobileFilterButton").on("click", function () {
+        filterModal.show();
+    });
+});
+
+
+$(document).ready(function () {
+    // Initialize Chosen on the select boxes
+    $(".chosen").chosen({ width: "100%" });
+
+    // When a product is selected, fetch related models
+    $("#productSelect").on("change", function () {
+        var productName = $(this).val();
+        if (productName !== "") {
+            var ajaxUrl = window.location.href.includes("/pages")
+                ? "../ajax/products/model"
+                : "./ajax/products/model";
+            $.ajax({
+                url: ajaxUrl,
+                method: "POST",
+                data: { product_name: productName },
+                success: function (data) {
+                    // Populate modelSelect with returned <option> tags
+                    $("#modelSelect").html(data).trigger("chosen:updated");
+                    // Reset brandSelect
+                    $("#brandSelect")
+                        .html('<option value="">Select a Brand</option>')
+                        .trigger("chosen:updated");
+                }
+            });
+        } else {
+            // Reset if no product selected
+            $("#modelSelect").html('<option value="">Select a Model</option>').trigger("chosen:updated");
+            $("#brandSelect").html('<option value="">Select a Brand</option>').trigger("chosen:updated");
+        }
+    });
+
+    // When a model is selected, fetch related manufacturers/brands
+    $("#modelSelect").on("change", function () {
+        var model = $(this).val();
+        var productName = $("#productSelect").val();
+        if (model !== "") {
+            var ajaxUrl = window.location.href.includes("/pages")
+                ? "../ajax/products/brand"
+                : "./ajax/products/brand";
+            $.ajax({
+                url: ajaxUrl,
+                method: "POST",
+                data: { model: model, product_name: productName },
+                success: function (data) {
+                    $("#brandSelect").html(data).trigger("chosen:updated");
+                }
+            });
+        } else {
+            $("#brandSelect").html('<option value="">Select a Brand</option>').trigger("chosen:updated");
+        }
+    });
+
+    // When the Search button is clicked, aggregate the selected values and redirect
+    $("#filterSearchBtn").on("click", function () {
+        var productVal = $("#productSelect").val() || "";
+        var modelVal = $("#modelSelect").val() || "";
+        var brandVal = $("#brandSelect").val() || "";
+        var queryString = "?product=" + encodeURIComponent(productVal) +
+            "&model=" + encodeURIComponent(modelVal) +
+            "&manufacturer=" + encodeURIComponent(brandVal);
+        window.location.href = "/emma_auto_online/pages/filter" + queryString;
+    });
+});
+
+
+$('#filterModal').on('hidden.bs.modal', function () {
+    $('.modal-backdrop').remove();
+});
+
