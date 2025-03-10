@@ -121,7 +121,7 @@ class ProductsController extends Controller
                         $row = $this->fetchResult("online_products", where: ["product_id = $product_id"]);
                     } while (mysqli_num_rows($row) > 0);
 
-                    $this->insert('online_products', $product_id, pathinfo($name, PATHINFO_FILENAME), "", "", $target_file);
+                    $this->insert('online_products', $product_id, pathinfo($name, PATHINFO_FILENAME), "", "","", $target_file);
 
                     $successful_uploads[] = $name; // Add to successful uploads
                 } else {
@@ -218,6 +218,12 @@ class ProductsController extends Controller
             $pmenu = $_GET['pmenu'];
             return $this->fetchResult('online_products',  where: ["model = $pmenu","manufacturer = $pmenu"], oper:["LIKE"],log: ["OR"]);
         }
+
+    }
+
+    public function fetchProduct($product_id)
+    {
+        return $this->fetchResult("online_products", where: ["product_id = $product_id"]);
 
     }
 

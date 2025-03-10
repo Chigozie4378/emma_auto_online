@@ -5,11 +5,15 @@ function isActive($page)
 }
 ?>
 
+
 <?php
 include_once "./autoload/loader.php";
 $ctr = new ProductsController();
 $unit = new UnitsController();
 $search_product = $ctr->searchProducts();
+?>
+<?php
+$cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 ?>
 
 <!-- Desktop Top Bar -->
@@ -63,7 +67,7 @@ $search_product = $ctr->searchProducts();
         <div class="cart-section d-flex align-items-center text-white">
             <i class="fas fa-exchange-alt"></i>
             <i class="fas fa-heart"></i>
-            <i class="fas fa-shopping-cart"></i> Cart (0 items)
+            <a href="cart"> <i class="fas fa-shopping-cart"></i> Cart (<?= $cartCount ?> items)</a> 
         </div>
     </div>
 </nav>
@@ -127,10 +131,11 @@ $search_product = $ctr->searchProducts();
             <span class="navbar-toggler-icon"></span>
         </button>
         <a href="#"><img src="https://via.placeholder.com/120x40?text=Logo" alt="Logo"></a>
-        <a href="#" class="text-dark position-relative">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">5</span>
-        </a>
+        
+        <a href="cart" class="text-dark position-relative">
+                <i class="fas fa-shopping-cart"></i> 
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="mobile-cart-count"><?= $cartCount ?></span>
+            </a>
     </div>
 </nav>
 
@@ -155,11 +160,11 @@ $search_product = $ctr->searchProducts();
                 <a class="dropdown-toggle text-dark d-block py-2" data-bs-toggle="dropdown" href="#">Shop by
                     Model</a>
                 <ul class="dropdown-menu">
-                <?php
-                foreach ($models as $model) {
-                    echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($model["name"]) . '">' . htmlspecialchars($model["name"]) . '</a></li>';
-                }
-                ?>
+                    <?php
+                    foreach ($models as $model) {
+                        echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($model["name"]) . '">' . htmlspecialchars($model["name"]) . '</a></li>';
+                    }
+                    ?>
                 </ul>
             </li>
             <li><a href="#" class="text-dark d-block py-2">Shop</a></li>
@@ -187,9 +192,9 @@ $search_product = $ctr->searchProducts();
 </div>
 <!-- Floating Cart Icon for Mobile -->
 <div class="floating-cart d-lg-none">
-    <a href="cart.php">
+    <a href="cart">
         <i class="fas fa-shopping-cart"></i>
-        <span class="badge rounded-pill bg-danger">5</span>
+        <span class="badge rounded-pill bg-danger" id="mobile-cart-count"><?= $cartCount ?></span>
     </a>
 </div>
 

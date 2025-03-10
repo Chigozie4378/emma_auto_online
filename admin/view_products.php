@@ -46,6 +46,7 @@ $ctr->deleteProduct();
                             <th>Name</th>
                             <th style="width: 200px;">Model</th>
                             <th style="width: 200px;">Manufacturer</th>
+                            <th style="width: 200px;">Price</th>
                             <th style="width: 100px;" class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -57,6 +58,7 @@ $ctr->deleteProduct();
                             $name = $row['product_name'];
                             $model = $row['model'];
                             $manufacturer = $row['manufacturer'];
+                            $price = $row['price'];
                             $image = $row['image_path'];
                         ?>
                         <tr>
@@ -109,6 +111,11 @@ $ctr->deleteProduct();
                                     ?>
                                 </select>
                             </td>
+                            <td>
+                                <div class="editable-cell" contenteditable="true" data-id="<?php echo $id; ?>" data-field="price">
+                                    <?php echo htmlspecialchars($price); ?>
+                                </div>
+                            </td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-link text-danger">
                                     <a class="text-danger" href="view_products?product_id=<?php echo $id;?>"><i class="fas fa-trash"></i></a>
@@ -136,7 +143,7 @@ $(document).ready(function () {
         const value = $(this).text().trim();
        
         $.ajax({
-            url: 'ajax/products/update.php',
+            url: 'ajax/products/update',
             type: 'POST',
             data: { id, field, value },
             success: function (response) {
@@ -155,7 +162,7 @@ $(document).ready(function () {
         const value = $(this).val();
 
         $.ajax({
-            url: 'ajax/products/update.php',
+            url: 'ajax/products/update',
             type: 'POST',
             data: { id, field, value },
             success: function (response) {
@@ -177,7 +184,7 @@ $(document).ready(function () {
         formData.append('file', file);
         
         $.ajax({
-            url: 'ajax/products/update.php',
+            url: 'ajax/products/update',
             type: 'POST',
             processData: false,
             contentType: false,
