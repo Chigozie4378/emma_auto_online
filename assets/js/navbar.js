@@ -175,17 +175,4 @@ $('#filterModal').on('hidden.bs.modal', function () {
 
 
 
-function updateCartCount() {
-    fetch('cart_session.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'action=count'
-    })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("cart-count").innerText = data.cart_count;
-            document.getElementById("mobile-cart-count").innerText = data.cart_count;
-        });
-}
-
 

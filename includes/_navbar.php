@@ -7,7 +7,7 @@ function isActive($page)
 
 
 <?php
-include_once "./autoload/loader.php";
+include_once "../autoload/loader.php";
 $ctr = new ProductsController();
 $unit = new UnitsController();
 $search_product = $ctr->searchProducts();
@@ -64,11 +64,16 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
         </div>
 
         <!-- Cart and Wishlist -->
-        <div class="cart-section d-flex align-items-center text-white">
-            <i class="fas fa-exchange-alt"></i>
-            <i class="fas fa-heart"></i>
-            <a href="cart"> <i class="fas fa-shopping-cart"></i> Cart (<?= $cartCount ?> items)</a> 
-        </div>
+        <?php if ($_SERVER['REQUEST_URI'] !== '/emma_auto_online/pages/cart'): ?>
+            <div class="cart-section d-flex align-items-center text-white">
+                <i class="fas fa-exchange-alt"></i>
+                <i class="fas fa-heart"></i>
+                <a href="cart">
+                    <i class="fas fa-shopping-cart"></i> Cart (<span class="cart-count"><?= $cartCount ?></span> items)
+                </a>
+            </div>
+        <?php endif; ?>
+
     </div>
 </nav>
 
@@ -131,13 +136,21 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
             <span class="navbar-toggler-icon"></span>
         </button>
         <a href="#"><img src="https://via.placeholder.com/120x40?text=Logo" alt="Logo"></a>
-        
-        <a href="cart" class="text-dark position-relative">
-                <i class="fas fa-shopping-cart"></i> 
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="mobile-cart-count"><?= $cartCount ?></span>
+
+        <?php if ($_SERVER['REQUEST_URI'] === '/emma_auto_online/pages/cart'): ?>
+            <a href="javascript:history.back()" style="text-decoration: none;" class="text-light">
+                <i class="fas fa-arrow-left"></i> Go Back
             </a>
+        <?php else: ?>
+            <a href="cart" class="text-dark position-relative">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    id="mobile-cart-count"><?= $cartCount ?></span>
+            </a>
+        <?php endif; ?>
     </div>
 </nav>
+
 
 <!-- Collapsible Mobile Menu -->
 <div class="collapse" id="mobileNavbar">
@@ -190,13 +203,16 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
         </div>
     </div>
 </div>
+
 <!-- Floating Cart Icon for Mobile -->
-<div class="floating-cart d-lg-none">
-    <a href="cart">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="badge rounded-pill bg-danger" id="mobile-cart-count"><?= $cartCount ?></span>
-    </a>
-</div>
+<?php if ($_SERVER['REQUEST_URI'] !== '/emma_auto_online/pages/cart'): ?>
+    <div class="floating-cart d-lg-none">
+        <a href="cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count badge rounded-pill bg-danger" id="mobile-cart-count"><?= $cartCount ?></span>
+        </a>
+    </div>
+<?php endif; ?>
 
 
 
