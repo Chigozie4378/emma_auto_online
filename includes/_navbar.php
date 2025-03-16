@@ -26,17 +26,26 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
         </div>
         <div>
             <?php
-            $sign_in = true;
-            if ($sign_in) {
+            if (isset($_SESSION['user_id'])) {
                 echo '
-                            <a href="#"><i class="fas fa-user"></i> User</a>
-                        ';
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i> ' . $_SESSION["name"] . '
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="account">Account</a></li>
+            <li><a class="dropdown-item" href="order_list">Orders</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="sign_out">Sign Out</a></li>
+        </ul>
+    </div>';
             } else {
                 echo '
-                        <a  href="#"><i class="fas fa-sign-out"></i> Sign In</a>
-                    ';
+    <a href="sign_in"><i class="fas fa-sign-in"></i> Sign In</a>
+    ';
             }
             ?>
+
         </div>
     </div>
 </div>
@@ -45,7 +54,8 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 <nav class="main-nav d-none d-lg-block sticky-top">
     <div class="container d-flex align-items-center">
         <!-- Logo -->
-        <a href="#"><img src="https://via.placeholder.com/120x40?text=MOBEX" alt="Logo"></a>
+        <a href="home"><img style="object-fit: contain; height: 40px; width: 40px;" class="rounded"
+        src="../assets/images/logo/logo.jpg" alt="Emma Auto"></a>
 
         <!-- Centered and Wider Search Bar -->
         <div class="flex-grow-1 d-flex justify-content-center">
@@ -132,10 +142,26 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 <!-- Mobile Navigation with Normal Dropdown -->
 <nav class="main-nav d-lg-none">
     <div class="container d-flex align-items-center justify-content-between">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a href="#"><img src="https://via.placeholder.com/120x40?text=Logo" alt="Logo"></a>
+        
+        <a href="home"><img style="object-fit: contain; height: 40px; width: 40px;" class="rounded"
+                src="../assets/images/logo/logo.jpg" alt="Emma Auto"></a>
+
+        <!-- User Icon with Dropdown for Logged-in Users -->
+        <div class="dropdown">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a style="text-decoration: none; color: white;" href="#" class="dropdown-toggle" id="mobileUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user"></i> <?php echo "  ".$_SESSION['name']?>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileUserDropdown">
+                    <li><a class="dropdown-item" href="account">Account</a></li>
+                    <li><a class="dropdown-item" href="orders">Orders</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="sign_out">Sign Out</a></li>
+                </ul>
+            <?php else: ?>
+                <i class="fa fa-sign-in"></i><a style="text-decoration: none; color: white;" href="sign_in"> Sign In</a>
+            <?php endif; ?>
+        </div>
 
         <?php if ($_SERVER['REQUEST_URI'] === '/emma_auto_online/pages/cart'): ?>
             <a href="javascript:history.back()" style="text-decoration: none;" class="text-light">
@@ -148,8 +174,13 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
                     id="mobile-cart-count"><?= $cartCount ?></span>
             </a>
         <?php endif; ?>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
 </nav>
+
 
 
 <!-- Collapsible Mobile Menu -->

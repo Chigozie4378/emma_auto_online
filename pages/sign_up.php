@@ -1,101 +1,117 @@
 <?php
-session_start();
 include "../autoload/loader.php";
-new CSRF();
-
 $ctr = new AuthController();
 $ctr->signUp();
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emma Auto Multi Company</title>
-    <link rel="icon" href="../assets/images/logo/logo.jpg" type="image/gif" sizes="20x20">
+    <title>Sign Up | Emma Auto Multi Company</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    <link rel="stylesheet" href="../assets/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../assets/css/nav-desktop.css">
-    <link rel="stylesheet" href="../assets/css/nav-mobile.css">
-    <link rel="stylesheet" href="../assets/css/slider.css">
-    <link rel="stylesheet" href="../assets/css/category-destop.css">
 </head>
 
 <body>
-    <!-- header -->
-    <?php
-    include '../includes/header.php';
-    ?>
-    <div class="container">
-        <div class="offset-md-3 col-md-6 col-sm-12">
-            <h1 class="text-center">Sign Up</h1>
-            <div class="p-4" style="background-color: #c9cfd8; border-radius: 10px;">
-                <form action="" method="post">
-                    <!-- CSRF Token -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                    <div class="form-group pb-3">
-                        <label for="title">Title</label>
-                         <div class="text-danger fw-bold"><?php echo $ctr->titleErr;?></div>
-                        <select class="form-control" name="title" id="title" required>
-                            <?php Form::oldSelect('title');?>
-                            <option value="">Select an Option</option>
-                            <option value="MR">MR</option>
-                            <option value="MRS">MRS</option>
-                        </select>
-                       
-                    </div>
-                    <div class="form-group pb-3">
-                        <label for="name">Name</label>
-                        <div class="text-danger fw-bold"><?php echo $ctr->nameErr;?></div>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name" value="<?php Form::oldValue('name');?>">
-                    </div>
-                    <div class="form-group pb-3">
-                        <label for="address">Address</label>
-                        <div class="text-danger fw-bold"><?php echo $ctr->addressErr;?></div>
-                        <input type="text" class="form-control" id="address" name="address"
-                            placeholder="Enter Your Address"  value="<?php Form::oldValue('address');?>">
-                    </div>
-                    <div class="form-group pb-3">
-                        <label for="phone_number">Phone Number</label>
-                        <div class="text-danger fw-bold"><?php echo $ctr->phone_numberErr; echo $phone_no_existErr?></div>
-                        <input type="text" class="form-control" id="phone_no" name="phone_no"
-                            placeholder="Enter Your Phone Number"  value="<?php Form::oldValue('phone_number');?>">
-                    </div>
-                    <div class="form-group pb-3">
-                        <label for="password">Password</label>
-                        <div class="text-danger fw-bold"><?php echo $ctr->passwordErr;?></div>
-                        <div class="text-danger fw-bold"><?php echo $ctr->passwordLenErr;?></div>
-                        <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Enter Your password"  value="<?php Form::oldValue('password');?>">
-                    </div>
-                    <div class="form-group pb-3">
-                        <label for="password">Confrim Password</label>
-                        <div class="text-danger fw-bold"><?php echo $ctr->confirm_passwordErr;?></div>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                            placeholder="Enter Your Confrim password"  value="<?php Form::oldValue('confirm_password');?>">
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" name="sign_up" value="Sign Up">
-                        <!-- <a href="sign_in" class="float-end text-dark">Sign In</a> -->
-                        <span class="float-end text-dark">Already have an account? <a href="sign_in">Sign In</a></span>
-                    </div>
-                </form>
-            </div>
-
+    <div class="auth-container">
+        <h3 class="text-center">Sign Up</h3>
+        <div class="text-center" style="color: red; font-weight: 400;"><?php echo $ctr->emptyErr, $ctr->user_existErr; ?>
         </div>
-
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <select name="title" id="" class="form-control" required>
+                    <?php $ctr->oldSelect('title') ?>
+                    <option value="">Select your title</option>
+                    <option value="MR">MR</option>
+                    <option value="MRS">MRS</option>
+                    <option value="Alfa">Alfa</option>
+                    <option value="ALhaji">ALhaji</option>
+                    <option value="ALhaja">ALhaja</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" value="<?php echo $ctr->oldValue('name') ?>"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Town</label>
+                <input type="text" class="form-control" name="address" value="<?php echo $ctr->oldValue('address') ?>"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <div style="color: red; font-weight: 400;"><?php echo $ctr->phoneErr ?></div>
+                <input type="text" class="form-control" name="phone_no" value="<?php echo $ctr->oldValue('phone_no') ?>"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email (Optional)</label>
+                <input type="email" class="form-control" name="email" value="<?php echo $ctr->oldValue('email') ?>">
+            </div>
+            <div class="mb-3 password-wrapper">
+                <label class="form-label">Password</label>
+                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" title="Must be at least 8 characters, 
+              with uppercase, lowercase, 
+              a digit, and a special character.">
+                </i>
+                <div style="color: red; font-weight: 400;"><?php echo $ctr->passwordErr ?></div>
+                <input type="password" class="form-control" name="password" id="signup-password"
+                    value="<?php echo $ctr->oldValue('password') ?>" required>
+                <span class="toggle-password" onclick="togglePassword('signup-password')">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+            <div class="mb-3 password-wrapper">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="confirm_password" id="signup-confirm-password"
+                    value="<?php echo $ctr->oldValue('confirm_password') ?>" required>
+                <span class="toggle-password" onclick="togglePassword('signup-confirm-password')">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMeCheck">
+                <label class="form-check-label" for="rememberMeCheck">
+                    Remember Me
+                </label>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Sign Up</button>
+        </form>
+        <div class="text-center mt-3">
+            <p>Already have an account? <a style="text-decoration: none;" href="sign_in">Sign In</a></p>
+        </div>
+        <div class="text-center mt-5">
+            <hr>
+            <a href="home" style="text-decoration: none; color: white;">Back to Home</a>
+        </div>
     </div>
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.nextElementSibling.querySelector('i');
 
+            if (field.type === "password") {
+                field.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                field.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
 
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/nav-mobile.js"></script>
-
 </body>
 
 </html>

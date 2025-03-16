@@ -35,7 +35,7 @@
                 return;
             }
 
-            fetch('cart_session', {
+            fetch('../tools/cart_session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `action=add&product_id=${productId}&quantity=${quantity}`
@@ -57,7 +57,7 @@
 
 
         function updateCartCount() {
-            fetch('cart_session', {
+            fetch('../tools/cart_session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=count'

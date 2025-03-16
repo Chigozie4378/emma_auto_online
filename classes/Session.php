@@ -32,9 +32,9 @@ class Session extends Controller
       new Redirect('../../index.php');
     }
   }
-  public static function staffLoginAccess($username)
+  public static function signIn($user_id)
   {
-    if (isset($_SESSION["$username"])) {
+    if (isset($_SESSION["$user_id"])) {
       new Redirect('staff/views/home.php');
     }
   }

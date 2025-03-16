@@ -1,7 +1,6 @@
 <?php
 session_start();
 $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
-
 $totalItems = count($cart);
 $totalQuantity = array_sum(array_column($cart, 'quantity'));
 $totalAmount = array_sum(array_map(function ($item) {
@@ -92,14 +91,17 @@ $totalAmount = array_sum(array_map(function ($item) {
                         <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="Product">
                         <div class="cart-details">
                             <h5><?php echo htmlspecialchars($item['name']); ?></h5>
-                            <p>Model: <?php echo htmlspecialchars($item['model']); ?> | Brand:
+                            <p> <?php echo htmlspecialchars($item['model']); ?> |
                                 <?php echo htmlspecialchars($item['brand']); ?>
                             </p>
-                            <p>Unit Price: <span class="unit-price">#<?php echo $item['price']; ?></span></p>
+                            <p>Unit Price: <span style="font-weight: bold;"
+                                    class="unit-price">#<?php echo $item['price']; ?></span></p>
                             <div class="cart-actions">
-                                <input type="number" class="form-control qty-input" value="<?php echo $item['quantity']; ?>"
-                                    min="1" onchange="updateCart('<?php echo $item['id']; ?>', this.value)">
-                                <span class="bold amount">#<?php echo $item['quantity'] * $item['price']; ?></span>
+                                <input type="number" style="font-weight: bold;" class="form-control qty-input"
+                                    value="<?php echo $item['quantity']; ?>" min="1"
+                                    onchange="updateCart('<?php echo $item['id']; ?>', this.value)">
+                                <span style="font-weight: bold;"
+                                    class="bold amount">#<?php echo $item['quantity'] * $item['price']; ?></span>
                                 <button class="btn btn-danger btn-sm" onclick="removeFromCart('<?php echo $item['id']; ?>')">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -110,15 +112,20 @@ $totalAmount = array_sum(array_map(function ($item) {
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="empty-cart">
-                    <img src="../assets/images/cart/cart.jpg" alt="Empty Cart" height="250" style="object-fit: contain;" width="200">
+                    <img src="../assets/images/cart/cart.jpg" alt="Empty Cart" height="250" style="object-fit: contain;"
+                        width="200">
                     <h5>You don't have any items in your cart. <a href="home"
                             style="list-style-type:none; text-decoration: none;"> Let's start shopping!</a></h5>
                 </div>
             <?php endif; ?>
         </div>
 
-        <div class="text-end mt-3">
-            <h4 class="bold">Total Amount: <span id="total-amount">#<?= $totalAmount ?></span></h4>
+        <div class="text-end my-3">
+            <h4 style="font-weight: bold;" class="bold">Total Amount: <span
+                    id="total-amount">#<?= $totalAmount ?></span></h4>
+            <?php if ($totalAmount > 0): ?>
+                <button class="btn btn-success mt-3" onclick="proceedToCheckout()">Proceed to Checkout</button>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -129,7 +136,7 @@ $totalAmount = array_sum(array_map(function ($item) {
 
     <script>
         function updateCart(productId, quantity) {
-            fetch('cart_session', {
+            fetch('../tools/cart_session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `action=update&product_id=${productId}&quantity=${quantity}`
@@ -139,7 +146,7 @@ $totalAmount = array_sum(array_map(function ($item) {
 
 
         function removeFromCart(productId) {
-            fetch('cart_session', {
+            fetch('../tools/cart_session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `action=remove&product_id=${productId}`
@@ -177,7 +184,7 @@ $totalAmount = array_sum(array_map(function ($item) {
 
 
         function updateCartCount() {
-            fetch('cart_session', {
+            fetch('..tools/cart_session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=count'
@@ -245,6 +252,25 @@ $totalAmount = array_sum(array_map(function ($item) {
             document.getElementById('total-qty').innerText = totalQuantity;
             document.getElementById('total-amount').innerText = `#${totalAmount.toFixed(2)}`;
         }
+
+        function proceedToCheckout() {
+            fetch('../tools/status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'action=check_login'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.logged_in) {
+                        window.location.href = 'checkout'; // Redirect to order processing
+                    } else {
+                        alert("You need to sign in before checking out.");
+                        window.location.href = 'sign_in'; // Redirect to login page
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        }
+
 
 
     </script>

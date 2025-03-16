@@ -1,69 +1,77 @@
 <?php
-session_start();
 include "../autoload/loader.php";
-new CSRF();
 $ctr = new AuthController();
 $ctr->signIn();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emma Auto Multi Company</title>
-    <link rel="icon" href="../assets/images/logo/logo.jpg" type="image/gif" sizes="20x20">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../assets/css/nav-desktop.css">
-    <link rel="stylesheet" href="../assets/css/nav-mobile.css">
-    <link rel="stylesheet" href="../assets/css/slider.css">
-    <link rel="stylesheet" href="../assets/css/category-destop.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | Emma Auto Multi Company</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-    <!-- header -->
-    <?php
-    include '../includes/header.php';
-    ?>
-    <div class="container">
-        <div class="offset-md-3 col-md-6 col-sm-12 p-2">
-            <h1 class="text-center">Sign In</h1>
-            <div class="p-4 " style="background-color: #c9cfd8; border-radius: 10px;">
-                
-                <div class="text-danger fw-bold"><?php echo $ctr->signInErr;?></div>
-                <form action="" method="post">
-                    <!-- CSRF Token -->
-                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                    <div class="form-group pb-3">
-                        <label for="phone_number">Phone Number</label>
-                        <input type="text" class="form-control" id="phone_no" name="phone_no"
-                            placeholder="Enter Your Phone Number" value="<?php Form::oldValue('phone_no');?>">
-                    </div>
-                    <div class="form-group pb-3">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Enter Your password" value="<?php Form::oldValue('password');?>">
-                    </div>
-                    <div class="form-group mb-3">
-                        <input type="submit" class="btn btn-primary" name="sign_in" value="Sign In">
-                       <span class="float-end text-dark">Don't have an account? <a href="sign_up"> Create Account</a></span>
-                    </div>
-                </form>
-            </div>
-
+  <div class="auth-container">
+    <h3 class="text-center">Sign In</h3>
+    <div style="color: red; font-weight: 400; text-align: center;"><?php echo $ctr->signInErr ?></div>
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input type="text" class="form-control" name="phone_no" required
+          value="<?php echo $ctr->oldValue('phone_no') ?>">
+      </div>
+      <div class="mb-3 password-wrapper">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" name="password" id="signin-password" required
+          value="<?php echo $ctr->oldValue('password') ?>">
+        <span class="toggle-password" onclick="togglePassword('signin-password')">
+          <i class="fas fa-eye"></i>
+        </span>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMeSignIn">
+          <label class="form-check-label" for="rememberMeSignIn">Remember Me</label>
         </div>
-
+        <a href="forget_password">Forgot Password?</a>
+      </div>
+      <button type="submit" name="sign_in" class="btn btn-primary w-100">Sign In</button>
+    </form>
+    <div class="text-center mt-3">
+      <p>Don't have an account? <a style="text-decoration: none;" href="sign_up">Sign Up</a></p>
     </div>
+    <div class="text-center mt-5">
+      <hr>
+      <a href="home" style="text-decoration: none; color: white;">Back to Home</a>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function togglePassword(fieldId) {
+      const field = document.getElementById(fieldId);
+      const icon = field.nextElementSibling.querySelector('i');
 
+      if (field.type === "password") {
+        field.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        field.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
 
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/nav-mobile.js"></script>
-
+  </script>
 </body>
 
 </html>

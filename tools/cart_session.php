@@ -34,7 +34,7 @@ if ($action === 'add' && $productId && $quantity > 0) {
             'id' => $item['product_id'],
             'name' => $item['product_name'],
             'model' => $item['model'],
-            'brand' => $item['brand'],
+            'brand' => $item['manufacturer'],
             'image' => $item['image_path'],
             'price' => $item['price'],
             'quantity' => $quantity
