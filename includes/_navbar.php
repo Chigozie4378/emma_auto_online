@@ -55,7 +55,7 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
     <div class="container d-flex align-items-center">
         <!-- Logo -->
         <a href="home"><img style="object-fit: contain; height: 40px; width: 40px;" class="rounded"
-        src="../assets/images/logo/logo.jpg" alt="Emma Auto"></a>
+                src="../assets/images/logo/logo.jpg" alt="Emma Auto"></a>
 
         <!-- Centered and Wider Search Bar -->
         <div class="flex-grow-1 d-flex justify-content-center">
@@ -142,20 +142,23 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 <!-- Mobile Navigation with Normal Dropdown -->
 <nav class="main-nav d-lg-none">
     <div class="container d-flex align-items-center justify-content-between">
-        
+
         <a href="home"><img style="object-fit: contain; height: 40px; width: 40px;" class="rounded"
                 src="../assets/images/logo/logo.jpg" alt="Emma Auto"></a>
 
         <!-- User Icon with Dropdown for Logged-in Users -->
         <div class="dropdown">
             <?php if (isset($_SESSION['user_id'])): ?>
-                <a style="text-decoration: none; color: white;" href="#" class="dropdown-toggle" id="mobileUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-user"></i> <?php echo "  ".$_SESSION['name']?>
+                <a style="text-decoration: none; color: white;" href="#" class="dropdown-toggle" id="mobileUserDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user"></i> <?php echo "  " . $_SESSION['name'] ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileUserDropdown">
                     <li><a class="dropdown-item" href="account">Account</a></li>
                     <li><a class="dropdown-item" href="orders">Orders</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item text-danger" href="sign_out">Sign Out</a></li>
                 </ul>
             <?php else: ?>
@@ -192,23 +195,28 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
             <li class="dropdown">
                 <a class="dropdown-toggle text-dark d-block py-2" data-bs-toggle="dropdown" href="#">Shop by
                     Brand</a>
-                <ul class="dropdown-menu">
-                    <?php
-                    foreach ($brands as $brand) {
-                        echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($brand["name"]) . '">' . htmlspecialchars($brand["name"]) . '</a></li>';
-                    }
-                    ?>
+                <ul class="dropdown-menu w-100 p-3">
+                    <div class="row">
+                        <?php
+                        foreach ($brands as $brand) {
+                            echo '<div class="col-4"><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($brand["name"]) . '">' . htmlspecialchars($brand["name"]) . '</a></div>';
+                        }
+                        ?>
+                    </div>
                 </ul>
+
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle text-dark d-block py-2" data-bs-toggle="dropdown" href="#">Shop by
                     Model</a>
-                <ul class="dropdown-menu">
-                    <?php
-                    foreach ($models as $model) {
-                        echo '<li><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($model["name"]) . '">' . htmlspecialchars($model["name"]) . '</a></li>';
-                    }
-                    ?>
+                    <ul class="dropdown-menu w-100 p-3">
+                    <div class="row">
+                        <?php
+                        foreach ($models as $model) {
+                            echo '<div class="col-4"><a class="dropdown-item" href="p_menu?pmenu=' . htmlspecialchars($model["name"]) . '">' . htmlspecialchars($model["name"]) . '</a></div>';
+                        }
+                        ?>
+                    </div>
                 </ul>
             </li>
             <li><a href="#" class="text-dark d-block py-2">Shop</a></li>

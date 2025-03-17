@@ -6,7 +6,9 @@
 
 body {
     font-family: 'Poppins', Arial, sans-serif;
+    padding-top: calc(80px + 10px); /* Adjust based on your navbar height, adding extra space */
 }
+
 
 /* Desktop Navigation */
 .top-bar {
@@ -118,6 +120,8 @@ body {
 
 
 .navbar {
+    position: relative;
+    z-index: 1050;
     background: white;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -140,9 +144,21 @@ body {
 }
 
 .dropdown-menu {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1051 !important;
+    position: absolute !important;
+    background: white;
+    width: auto;
 }
+
+/* Ensure dropdowns are visible in desktop navbar */
+.navbar-nav .dropdown-menu {
+    z-index: 1050; /* Ensure it appears above search bar */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: auto;
+}
+
 
 .dropdown-item {
     transition: all 0.3s ease-in-out;
@@ -201,6 +217,7 @@ body {
     .dropdown-menu .dropdown-item {
         text-decoration: none !important;
     }
+
     .floating-cart {
         position: fixed;
         bottom: 20px;
@@ -212,11 +229,31 @@ body {
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         /* Initially hidden, will be shown by JS when header cart is off-screen */
         display: none;
-      }
-      .floating-cart a {
+    }
+
+    .floating-cart a {
         color: inherit;
         text-decoration: none;
-      }
+    }
+
+    .navbar-collapse {
+        position: relative;
+        z-index: 1050;
+    }
+
+    .dropdown-menu {
+        position: absolute !important;
+        z-index: 1100 !important;
+        width: 100%;
+        background: white;
+    }
+
+    /* Push search bar down when navbar expands */
+    .navbar-collapse.show + .mobile-search-container {
+        margin-top: 80px !important;  /* Push search bar down */
+    }
+    
+
 }
 
 
@@ -232,4 +269,3 @@ body {
         transform: translateY(0);
     }
 }
-

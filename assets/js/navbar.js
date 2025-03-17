@@ -174,5 +174,34 @@ $('#filterModal').on('hidden.bs.modal', function () {
 });
 
 
+// navbar
+
+document.addEventListener("DOMContentLoaded", function () {
+    var navbarHeight = document.querySelector(".main-nav").offsetHeight;
+    document.body.style.paddingTop = navbarHeight + "px";
+});
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const navbarToggler = document.querySelector(".navbar-toggler");
+    const mobileSearchContainer = document.querySelector(".mobile-search-container");
+    const mobileNavbar = document.getElementById("mobileNavbar");
+
+    navbarToggler.addEventListener("click", function () {
+        setTimeout(() => {
+            if (mobileNavbar.classList.contains("show")) {
+                mobileSearchContainer.style.marginTop = "80px"; // Push down when expanded
+            } else {
+                mobileSearchContainer.style.marginTop = "0"; // Reset margin when collapsed
+            }
+        }, 300); // Small delay to allow animation to complete
+    });
+});
+
+
 
 
