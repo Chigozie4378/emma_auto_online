@@ -34,7 +34,7 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
         </a>
         <ul class="dropdown-menu" aria-labelledby="userDropdown">
             <li><a class="dropdown-item" href="account">Account</a></li>
-            <li><a class="dropdown-item" href="order_list">Orders</a></li>
+            <li><a class="dropdown-item" href="orders">Orders</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item text-danger" href="sign_out">Sign Out</a></li>
         </ul>

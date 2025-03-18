@@ -75,12 +75,9 @@ class OrdersController extends Controller
         $user_id = $_SESSION['user_id'];
         return $this->fetchResult("online_orders", "user_id=$user_id", order_by: "created_at DESC");
     }
-    public function orders()
+    public function invoice()
     {
 
-        if (!isset($_GET['oid'])) {
-            die("Invalid request.");
-        }
 
         $oid = $_GET['oid'];
 
@@ -90,6 +87,38 @@ class OrdersController extends Controller
                 "online_users" => "online_orders.user_id = online_users.user_id"
             ],
             where: ["online_orders.order_id=$oid"]
+        );
+    }
+    public function invoiceDetails()
+    {
+
+        if (!isset($_GET['oid'])) {
+            die("Invalid request.");
+        }
+
+        $oid = $_GET['oid'];
+
+        return $this->fetchResult(
+            "online_order_details",
+            join: [
+                "online_orders" => "online_order_details.order_id = online_orders.order_id",
+                "online_products" => "online_order_details.product_id = online_products.product_id",
+                "online_users" => "online_orders.user_id = online_users.user_id"
+            ],
+            where: ["online_orders.order_id=$oid"]
+        );
+    }
+    public function orders()
+    {
+
+
+        $user_id = $_SESSION['user_id'];
+        return $this->fetchResult(
+            "online_orders",
+            join: [
+                "online_users" => "online_orders.user_id = online_users.user_id"
+            ],
+            where: ["online_orders.user_id=$user_id"]
         );
     }
     public function orderDetails()

@@ -1,8 +1,8 @@
 <?php
 include "../autoload/loader.php";
 $ctr = new OrdersController();
-$orders = $ctr->orders();
-$order_details = $ctr->orderDetails();
+$orders = $ctr->invoice();
+$order_details = $ctr->invoiceDetails();
 $order = $orders->fetch_assoc();
 ?>
 
@@ -81,7 +81,7 @@ $order = $orders->fetch_assoc();
         </div>
         
         <div class="d-flex justify-content-end gap-2">
-        <a href="home" class="btn btn-secondary btn-orders">Go Back</a>
+        <a href="orders" class="btn btn-secondary btn-orders">Orders</a>
             <button class="btn btn-primary btn-print" onclick="window.print()">Print Invoice</button>
             
         </div>
