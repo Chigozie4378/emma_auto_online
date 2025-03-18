@@ -6,7 +6,6 @@
 
 body {
     font-family: 'Poppins', Arial, sans-serif;
-    padding-top: calc(80px + 10px); /* Adjust based on your navbar height, adding extra space */
 }
 
 

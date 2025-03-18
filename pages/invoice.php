@@ -1,46 +1,90 @@
 <?php
 include "../autoload/loader.php";
 $ctr = new OrdersController();
-$order_details = $ctr->invoice();
+$orders = $ctr->orders();
+$order_details = $ctr->orderDetails();
+$order = $orders->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Invoice #<?= $invoice_number ?></title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice #<?= $order['invoice_no'] ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Poppins', sans-serif;
+        }
+        .invoice-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            margin: 40px auto;
+            max-width: 700px;
+        }
+        .item-card {
+            border-bottom: 1px solid #efefef;
+            padding: 15px 0;
+        }
+        .item-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .item-line {
+            display: flex;
+            justify-content: space-between;
+            color: #6c757d;
+            font-size: 16px;
+            margin-top: 4px;
+        }
+        .total-box {
+            border-top: 2px solid #dee2e6;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        .total-box h4 {
+            font-weight: bold;
+        }
+        .btn-print, .btn-orders {
+            margin-top: 20px;
+        }
+        @media print {
+            .btn-print, .btn-orders { display: none; }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center">Invoice</h2>
-        <p><strong>Invoice Number:</strong> <?= $invoice_number ?></p>
-        <p><strong>Order Date:</strong> <?= $order['created_at'] ?></p>
-        <p><strong>Total Amount:</strong> #<?= number_format($order['total_amount'], 2) ?></p>
+    <div class="invoice-card">
+        <h2 class="text-center mb-4">Invoice</h2>
+        <div class="mb-3">
+        <p><strong>Name:</strong> <?= $order['name'] ?></p>
+            <p><strong>Invoice Number:</strong> <?= $order['invoice_no'] ?></p>
+            <p><strong>Order Date:</strong> <?= $order['created_at'] ?></p>
+        </div>
+        
+        <?php foreach ($order_details as $item): ?>
+            <div class="item-card">
+                <div class="item-title"><?= $item['quantity'] ?> × <?= htmlspecialchars($item['product_name'])?> &nbsp;&nbsp; <?= htmlspecialchars($item['model'])?>&nbsp;&nbsp; <?=htmlspecialchars($item['manufacturer']) ?></div>
+                <div class="item-line">
+                    <span>Unit Price: #<?= number_format($item['price'], 2) ?></span>
+                    <span>Amount: #<?= number_format($item['quantity'] * $item['price'], 2) ?></span>
+                </div>
+            </div>
+        <?php endforeach; ?>
 
-        <table class="table table-bordered mt-3">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($order_details as $item): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($item['product_name']) ?></td>
-                        <td><?= $item['quantity'] ?></td>
-                        <td>#<?= number_format($item['price'], 2) ?></td>
-                        <td>#<?= number_format($item['quantity'] * $item['price'], 2) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <button class="btn btn-primary" onclick="window.print()">Print Invoice</button>
-        <a href="orders" class="btn btn-secondary">View My Orders</a>
+        <div class="total-box text-end">
+            <h4>Total Amount: #<?= number_format($order['total_amount'], 2) ?></h4>
+        </div>
+        
+        <div class="d-flex justify-content-end gap-2">
+        <a href="home" class="btn btn-secondary btn-orders">Go Back</a>
+            <button class="btn btn-primary btn-print" onclick="window.print()">Print Invoice</button>
+            
+        </div>
     </div>
 </body>
 </html>
