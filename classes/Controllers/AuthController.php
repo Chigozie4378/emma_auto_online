@@ -99,6 +99,9 @@ class AuthController extends Controller
      *************************************************/
     public function signUp()
     {
+        if (isset($_SESSION['user_id'])) {
+            new Redirect('home');
+        }
         if (empty($_SESSION['token'])) {
             $_SESSION['token'] = bin2hex(random_bytes(32));
         }
@@ -313,6 +316,9 @@ class AuthController extends Controller
      *************************************************/
     public function signIn()
     {
+        if (isset($_SESSION['user_id'])) {
+            new Redirect('home');
+        }
         if (empty($_SESSION['token'])) {
             $_SESSION['token'] = bin2hex(random_bytes(32));
         }

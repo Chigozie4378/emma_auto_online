@@ -174,17 +174,6 @@ $('#filterModal').on('hidden.bs.modal', function () {
 });
 
 
-// navbar
-
-document.addEventListener("DOMContentLoaded", function () {
-    var navbarHeight = document.querySelector(".main-nav").offsetHeight;
-    document.body.style.paddingTop = navbarHeight + "px";
-});
-
-
-
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
     const navbarToggler = document.querySelector(".navbar-toggler");
@@ -202,6 +191,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+window.addEventListener('resize', function () {
+    const mobileNavbar = document.getElementById('mobileNavbar');
+    if (window.innerWidth >= 992 && mobileNavbar.classList.contains('show')) {
+        const bsCollapse = new bootstrap.Collapse(mobileNavbar, { toggle: false });
+        bsCollapse.hide();
+    }
+});
+
+document.querySelectorAll('.navbar-toggler').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+        setTimeout(() => {
+            document.activeElement.blur();
+        }, 100); // remove focus after toggle animation finishes
+    });
+});
 
 
 

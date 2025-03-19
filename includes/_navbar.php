@@ -76,8 +76,6 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
         <!-- Cart and Wishlist -->
         <?php if ($_SERVER['REQUEST_URI'] !== '/emma_auto_online/pages/cart'): ?>
             <div class="cart-section d-flex align-items-center text-white">
-                <i class="fas fa-exchange-alt"></i>
-                <i class="fas fa-heart"></i>
                 <a href="cart">
                     <i class="fas fa-shopping-cart"></i> Cart (<span class="cart-count"><?= $cartCount ?></span> items)
                 </a>
@@ -167,9 +165,9 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
         </div>
 
         <?php if ($_SERVER['REQUEST_URI'] === '/emma_auto_online/pages/cart'): ?>
-            <a href="javascript:history.back()" style="text-decoration: none;" class="text-light">
+            <!-- <a href="javascript:history.back()" style="text-decoration: none;" class="text-light">
                 <i class="fas fa-arrow-left"></i> Go Back
-            </a>
+            </a> -->
         <?php else: ?>
             <a href="cart" class="text-dark position-relative">
                 <i class="fas fa-shopping-cart"></i>
