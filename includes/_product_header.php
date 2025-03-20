@@ -102,7 +102,7 @@
             display: none;
             /* Hidden by default */
             position: fixed;
-            z-index: 1000;
+            z-index: 2000;
             left: 0;
             top: 0;
             width: 100%;
@@ -131,6 +131,14 @@
             font-weight: bold;
             cursor: pointer;
         }
+        @media (max-width: 576px) {
+            .frame-content {
+                margin-top: 80px;
+                /* or adjust to your preferred space */
+            }
+        }
+
+
 
         @keyframes fadeIn {
             from {

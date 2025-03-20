@@ -315,46 +315,70 @@ class AuthController extends Controller
      * SIGN IN
      *************************************************/
     public function signIn()
-    {
-        if (isset($_SESSION['user_id'])) {
-            new Redirect('home');
-        }
-        if (empty($_SESSION['token'])) {
-            $_SESSION['token'] = bin2hex(random_bytes(32));
-        }
-        if (isset($_POST['sign_in'])) {
-            if (!hash_equals($_SESSION['token'], $_POST['csrf_token'])) {
-                die("CSRF token mismatch.");
-            }
-
-            $phone_no = $this->formatPhoneNumber($this->test_input($_POST['phone_no']));
-            $password = $this->test_input($_POST['password']);
-            $remember_me = isset($_POST['remember_me']);
-
-            $user = $this->fetchResult("online_users", ["phone_no=$phone_no"]);
-            if (mysqli_num_rows($user) === 0) {
-                $this->signInErr = "Invalid Sign In Details!";
-                return;
-            }
-
-            $userData = mysqli_fetch_assoc($user);
-            if (!password_verify($password, $userData['password'])) {
-                $this->signInErr = "Invalid Sign In Details!";
-                return;
-            }
-
-            $_SESSION['user_id'] = $userData['user_id'];
-            $_SESSION['phone_no'] = $userData['phone_no'];
-            $_SESSION['name'] = $userData['name'];
-
-            if ($remember_me) {
-                setcookie("user_id", $userData['user_id'], time() + (86400 * 30), "/", "", false, true);
-            }
-            $this->signInSuccess = "Login successful!";
-            new Redirect('home');
-            exit;
+{
+    // Save referring URL if appropriate
+    if (!isset($_SESSION['redirect_after_login']) && isset($_SERVER['HTTP_REFERER'])) {
+        $referer = $_SERVER['HTTP_REFERER'];
+        if (
+            strpos($referer, 'signin.php') === false &&
+            strpos($referer, 'signup.php') === false &&
+            strpos($referer, 'forgot_password.php') === false
+        ) {
+            $_SESSION['redirect_after_login'] = $referer;
         }
     }
+
+    if (isset($_SESSION['user_id'])) {
+        new Redirect('home');
+    }
+
+    if (empty($_SESSION['token'])) {
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+    }
+
+    if (isset($_POST['sign_in'])) {
+        if (!hash_equals($_SESSION['token'], $_POST['csrf_token'])) {
+            die("CSRF token mismatch.");
+        }
+
+        $phone_no = $this->formatPhoneNumber($this->test_input($_POST['phone_no']));
+        $password = $this->test_input($_POST['password']);
+        $remember_me = isset($_POST['remember_me']);
+
+        $user = $this->fetchResult("online_users", ["phone_no=$phone_no"]);
+        if (mysqli_num_rows($user) === 0) {
+            $this->signInErr = "Invalid Sign In Details!";
+            return;
+        }
+
+        $userData = mysqli_fetch_assoc($user);
+        if (!password_verify($password, $userData['password'])) {
+            $this->signInErr = "Invalid Sign In Details!";
+            return;
+        }
+
+        $_SESSION['user_id'] = $userData['user_id'];
+        $_SESSION['phone_no'] = $userData['phone_no'];
+        $_SESSION['name'] = $userData['name'];
+
+        if ($remember_me) {
+            setcookie("user_id", $userData['user_id'], time() + (86400 * 30), "/", "", false, true);
+        }
+
+        $this->signInSuccess = "Login successful!";
+        echo "";
+
+        if (isset($_SESSION['redirect_after_login'])) {
+            $redirect_url = $_SESSION['redirect_after_login'];
+            unset($_SESSION['redirect_after_login']);
+            new Redirect($redirect_url);
+        } else {
+            new Redirect('home');
+        }
+        exit;
+    }
+}
+
 
     /*************************************************
      * FORGOT PASSWORD (Send OTP by phone/email)
